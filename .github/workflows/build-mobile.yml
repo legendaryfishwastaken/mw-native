@@ -2,8 +2,8 @@ name: build mobile app
 
 on:
   pull_request:
-    types: [opened, ready_for_review]
-  workflow_dispatch:
+    branches:
+      - "*"
 
 permissions:
   contents: write
