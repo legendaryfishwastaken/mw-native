@@ -1,7 +1,7 @@
 import { TMDB } from "tmdb-ts";
 
 const TMDB_API_KEY =
-  "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkYTM1ZTgyMzE4OTc0NTgxNDJmZjljZTE4ODExNWRlNiIsInN1YiI6IjY0OTM0ZDQ1ODliNTYxMDExYzliZDVhMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.AzWnIcxPNgDwGdzeIZ_C3mRC_5_qy-Z-SRPglLjzlNc";
+  "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiZTlhNmViNDU2ZDliZmMxYWZkMWYyNmU1NzE4ZjA4NCIsInN1YiI6IjYzYzE4NjkzYTU3NDNkMDA3ZDExZGFlNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.j1a8MCW-xOKcKTNFUCywKszVawlb3nRZwQD_b14A6CA";
 export const tmdb = new TMDB(TMDB_API_KEY);
 
 export function getMediaPoster(posterPath: string): string {

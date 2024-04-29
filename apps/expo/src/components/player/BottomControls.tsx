@@ -43,53 +43,51 @@ export const BottomControls = () => {
     }
   }, [status]);
 
-  if (status?.isLoaded) {
-    return (
+  return (
+    <View
+      height={128}
+      width="100%"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      padding={24}
+    >
+      <Controls>
+        <View flexDirection="row" justifyContent="space-between" width="$11">
+          <Text fontWeight="bold">{currentTime}</Text>
+          <Text marginHorizontal={1} fontWeight="bold">
+            /
+          </Text>
+          <TouchableOpacity onPress={toggleTimeDisplay}>
+            <Text fontWeight="bold">
+              {showRemaining ? remainingTime : durationTime}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <ProgressBar />
+      </Controls>
       <View
-        height={128}
-        width="100%"
-        flexDirection="column"
+        flexDirection="row"
         alignItems="center"
         justifyContent="center"
-        padding={24}
+        gap={4}
+        paddingBottom={40}
       >
-        <Controls>
-          <View flexDirection="row" justifyContent="space-between" width="$11">
-            <Text fontWeight="bold">{currentTime}</Text>
-            <Text marginHorizontal={1} fontWeight="bold">
-              /
-            </Text>
-            <TouchableOpacity onPress={toggleTimeDisplay}>
-              <Text fontWeight="bold">
-                {showRemaining ? remainingTime : durationTime}
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <ProgressBar />
-        </Controls>
-        <View
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="center"
-          gap={4}
-          paddingBottom={40}
-        >
-          {!isLocalFile && (
-            <>
-              <SeasonSelector />
-              <CaptionsSelector />
-              <SourceSelector />
-              <AudioTrackSelector />
-              <SettingsSelector />
-              {Platform.OS === "android" ||
-              (Platform.OS === "ios" && isDevelopmentProvisioningProfile()) ? (
-                <DownloadButton />
-              ) : null}
-            </>
-          )}
-        </View>
+        {!isLocalFile && (
+          <>
+            <SeasonSelector />
+            <CaptionsSelector />
+            <SourceSelector />
+            <AudioTrackSelector />
+            <SettingsSelector />
+            {Platform.OS === "android" ||
+            (Platform.OS === "ios" && isDevelopmentProvisioningProfile()) ? (
+              <DownloadButton />
+            ) : null}
+          </>
+        )}
       </View>
-    );
-  }
+    </View>
+  );
 };

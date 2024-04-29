@@ -78,6 +78,10 @@ const EpisodeSelector = ({
               onPress={() => {
                 setMeta({
                   ...meta,
+                  season: {
+                    number: seasonNumber,
+                    tmdbId: meta.season?.tmdbId ?? meta.tmdbId,
+                  },
                   episode: {
                     number: episode.episode_number,
                     tmdbId: episode.id.toString(),
