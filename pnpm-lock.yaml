@@ -287,7 +287,7 @@ importers:
   packages/provider-utils:
     dependencies:
       '@movie-web/providers':
-        specifier: github:sussy-code/providers
+        specifier: https://github.com/sussy-code/providers
         version: https://codeload.github.com/sussy-code/providers/tar.gz/ead928c5d09cad1c23aeab58687d3fae7f426dba
       parse-hls:
         specifier: ^1.0.7
