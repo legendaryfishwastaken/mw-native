@@ -1,4 +1,5 @@
 import { FontAwesome } from "@expo/vector-icons";
+import { Spinner } from "tamagui";
 
 import { usePlayerStore } from "~/stores/player/store";
 
@@ -7,6 +8,15 @@ export const PlayButton = () => {
   const status = usePlayerStore((state) => state.status);
   const playAudio = usePlayerStore((state) => state.playAudio);
   const pauseAudio = usePlayerStore((state) => state.pauseAudio);
+
+  if (
+    status?.isLoaded &&
+    !status.isPlaying &&
+    status.isBuffering &&
+    status.positionMillis > status.playableDurationMillis!
+  ) {
+    return <Spinner size="large" color="white" />;
+  }
 
   return (
     <FontAwesome

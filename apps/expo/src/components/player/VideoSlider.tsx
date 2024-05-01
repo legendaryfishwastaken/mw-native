@@ -42,6 +42,7 @@ const VideoSlider = ({ onSlidingComplete }: VideoSliderProps) => {
   const minimumValue = 0;
   const maximumValue = status?.isLoaded ? status.durationMillis! : 0;
   const value = status?.isLoaded ? status.positionMillis : 0;
+  const bufferValue = status?.isLoaded ? status.playableDurationMillis : 0;
 
   const valueToX = (v: number) => {
     if (maximumValue === minimumValue) return 0;
@@ -55,6 +56,7 @@ const VideoSlider = ({ onSlidingComplete }: VideoSliderProps) => {
   const valueX = valueToX(value);
   const translateX = useSharedValue(valueToX(value));
   const isDragging = useSharedValue(false);
+  const bufferTranslateX = useSharedValue(valueToX(bufferValue!));
 
   useEffect(() => {
     if (!isDragging.value) {
@@ -110,11 +112,20 @@ const VideoSlider = ({ onSlidingComplete }: VideoSliderProps) => {
     };
   });
 
+  const bufferStyle = useAnimatedStyle(() => {
+    return {
+      width: bufferTranslateX.value + knobSize_,
+      backgroundColor: "rgba(255, 255, 255, 0.5)",
+      borderRadius: trackSize_ / 2,
+    };
+  });
+
   return (
     <TapGestureHandler
       ref={tapRef}
       onHandlerStateChange={onTapEvent}
       simultaneousHandlers={panRef}
+      enabled={status?.isLoaded}
     >
       <View
         style={[
@@ -146,6 +157,16 @@ const VideoSlider = ({ onSlidingComplete }: VideoSliderProps) => {
                 borderRadius: trackSize_ / 2,
               },
               progressStyle,
+            ]}
+          />
+          <Animated.View
+            style={[
+              {
+                position: "absolute",
+                height: trackSize_,
+                borderRadius: trackSize_ / 2,
+              },
+              bufferStyle,
             ]}
           />
           <PanGestureHandler

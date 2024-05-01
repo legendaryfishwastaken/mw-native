@@ -18,20 +18,19 @@ export const ProgressBar = () => {
     [videoRef],
   );
 
-  if (status?.isLoaded) {
-    return (
-      <TouchableOpacity
-        style={{
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
-          paddingBottom: 36,
-          paddingTop: 24,
-        }}
-        onPress={() => setIsIdle(false)}
-      >
-        <VideoSlider onSlidingComplete={updateProgress} />
-      </TouchableOpacity>
-    );
-  }
+  return (
+    <TouchableOpacity
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        paddingBottom: 36,
+        paddingTop: 24,
+      }}
+      onPress={() => setIsIdle(false)}
+      disabled={!status?.isLoaded}
+    >
+      <VideoSlider onSlidingComplete={updateProgress} />
+    </TouchableOpacity>
+  );
 };

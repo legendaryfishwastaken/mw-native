@@ -69,6 +69,7 @@ export const VideoPlayer = () => {
   const videoSrc = usePlayerStore((state) => state.videoSrc) ?? undefined;
   const setVideoSrc = usePlayerStore((state) => state.setVideoSrc);
   const setStatus = usePlayerStore((state) => state.setStatus);
+  const status = usePlayerStore((state) => state.status);
   const setIsIdle = usePlayerStore((state) => state.setIsIdle);
   const toggleAudio = usePlayerStore((state) => state.toggleAudio);
   const toggleState = usePlayerStore((state) => state.toggleState);
@@ -320,13 +321,13 @@ export const VideoPlayer = () => {
           alignItems="center"
           justifyContent="center"
         >
-          {isLoading && (
-            <Spinner
-              size="large"
-              color="$loadingIndicator"
-              position="absolute"
-            />
-          )}
+          {isLoading ||
+          (status?.isLoaded &&
+            status.positionMillis >= status.playableDurationMillis! &&
+            isIdle) ? (
+            <Spinner size="large" color="white" position="absolute" />
+          ) : null}
+
           <ControlsOverlay isLoading={isLoading} />
         </View>
         {showVolumeOverlay && <GestureOverlay value={volume} type="volume" />}

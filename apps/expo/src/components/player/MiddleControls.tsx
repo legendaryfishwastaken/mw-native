@@ -1,5 +1,9 @@
-import { TouchableWithoutFeedback } from "react-native";
-import { View } from "tamagui";
+import { StyleSheet, TouchableWithoutFeedback } from "react-native";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 
 import { usePlayerStore } from "~/stores/player/store";
 import { Controls } from "./Controls";
@@ -14,18 +18,21 @@ export const MiddleControls = () => {
     setIsIdle(!idle);
   };
 
+  const opacity = useSharedValue(1);
+
+  opacity.value = withTiming(idle ? 0 : 1, {
+    duration: 300,
+  });
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: opacity.value,
+    };
+  });
+
   return (
     <TouchableWithoutFeedback onPress={handleTouch}>
-      <View
-        position="absolute"
-        height="100%"
-        width="100%"
-        flex={1}
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="center"
-        gap={82}
-      >
+      <Animated.View style={[animatedStyle, styles.container]}>
         <Controls>
           <SeekButton type="backward" />
         </Controls>
@@ -35,7 +42,20 @@ export const MiddleControls = () => {
         <Controls>
           <SeekButton type="forward" />
         </Controls>
-      </View>
+      </Animated.View>
     </TouchableWithoutFeedback>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 82,
+  },
+});
