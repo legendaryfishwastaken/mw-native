@@ -1,3 +1,4 @@
+import { StyleSheet } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -29,37 +30,50 @@ export const Header = () => {
   });
 
   return (
-    <Animated.View style={[animatedStyle]}>
-      <LinearGradient colors={["rgba(0,0,0,0.5)", "rgba(0,0,0,0)"]}>
-        <View
-          zIndex={50}
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="space-between"
-          height={64}
-          paddingHorizontal="$8"
-        >
-          <View width={150}>
-            <Controls>
-              <BackButton />
-            </Controls>
-          </View>
-          {meta && (
-            <Text fontWeight="bold">
-              {meta.title} ({meta.releaseYear}){" "}
-              {meta.season !== undefined && meta.episode !== undefined
-                ? mapSeasonAndEpisodeNumberToText(
-                    meta.season.number,
-                    meta.episode.number,
-                  )
-                : ""}
-            </Text>
-          )}
-          <View alignItems="center" justifyContent="center" width={150}>
-            <BrandPill />
-          </View>
+    <Animated.View style={[animatedStyle, styles.container]}>
+      <LinearGradient
+        colors={["rgba(0,0,0,0.5)", "rgba(0,0,0,0)"]}
+        zIndex={0}
+        position="absolute"
+        height="100%"
+        width="100%"
+      />
+      <View
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="space-between"
+        height={64}
+        zIndex={1}
+        width="100%"
+      >
+        <View width={150}>
+          <Controls>
+            <BackButton />
+          </Controls>
         </View>
-      </LinearGradient>
+        {meta && (
+          <Text fontWeight="bold">
+            {meta.title} ({meta.releaseYear}){" "}
+            {meta.season !== undefined && meta.episode !== undefined
+              ? mapSeasonAndEpisodeNumberToText(
+                  meta.season.number,
+                  meta.episode.number,
+                )
+              : ""}
+          </Text>
+        )}
+        <View alignItems="center" justifyContent="center" width={150}>
+          <BrandPill />
+        </View>
+      </View>
     </Animated.View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    zIndex: 50,
+    height: 64,
+    paddingHorizontal: 36,
+  },
+});
