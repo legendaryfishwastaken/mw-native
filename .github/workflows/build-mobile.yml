@@ -97,7 +97,7 @@ jobs:
         run: cd apps/expo && pnpm ipa
 
       - name: Upload movie-web.ipa as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ipa
           path: ./apps/expo/ios/build/movie-web.ipa
