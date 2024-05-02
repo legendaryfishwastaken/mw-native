@@ -9,7 +9,7 @@ runs:
         bun-version: latest
 
     - shell: bash
-      run: pnpm add -g turbo
+      run: bun add -g turbo
 
     - shell: bash
-      run: pnpm install
+      run: bun install
