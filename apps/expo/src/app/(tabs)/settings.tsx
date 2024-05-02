@@ -12,6 +12,7 @@ import {
   MaterialIcons,
 } from "@expo/vector-icons";
 import { useMutation } from "@tanstack/react-query";
+import { getCurrentMarketplaceAsync } from "modules/check-ios-marketplace";
 import {
   Adapt,
   ScrollView,
@@ -38,7 +39,6 @@ import {
   usePlayerSettingsStore,
 } from "~/stores/settings";
 import { useThemeStore } from "~/stores/theme";
-import { getCurrentMarketplaceAsync } from "modules/check-ios-marketplace";
 
 const themeOptions: ThemeStoreOption[] = [
   "main",
@@ -75,10 +75,10 @@ export default function SettingsScreen() {
         );
         setShowUpdateSheet(true);
       } else {
-		  showToast("No updates available");
-		  void getCurrentMarketplaceAsync().then((marketplace) => {
-			  console.log(marketplace);
-		  });
+        showToast("No updates available");
+        void getCurrentMarketplaceAsync().then((marketplace) => {
+          console.log(marketplace);
+        });
       }
     },
   });
