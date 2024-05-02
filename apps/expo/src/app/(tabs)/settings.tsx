@@ -38,6 +38,7 @@ import {
   usePlayerSettingsStore,
 } from "~/stores/settings";
 import { useThemeStore } from "~/stores/theme";
+import { getCurrentMarketplaceAsync } from "modules/check-ios-marketplace";
 
 const themeOptions: ThemeStoreOption[] = [
   "main",
@@ -74,7 +75,10 @@ export default function SettingsScreen() {
         );
         setShowUpdateSheet(true);
       } else {
-        showToast("No updates available");
+		  showToast("No updates available");
+		  void getCurrentMarketplaceAsync().then((marketplace) => {
+			  console.log(marketplace);
+		  });
       }
     },
   });
