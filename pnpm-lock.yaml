@@ -107,6 +107,9 @@ importers:
       expo-haptics:
         specifier: ~12.8.1
         version: 12.8.1(expo@50.0.17)
+      expo-keep-awake:
+        specifier: ~12.8.2
+        version: 12.8.2(expo@50.0.17)
       expo-linear-gradient:
         specifier: ^12.7.2
         version: 12.7.2(expo@50.0.17)
@@ -14352,7 +14355,6 @@ packages:
     resolution: {tarball: https://codeload.github.com/sussy-code/providers/tar.gz/ead928c5d09cad1c23aeab58687d3fae7f426dba}
     name: '@movie-web/providers'
     version: 2.3.0
-    prepare: true
     requiresBuild: true
     dependencies:
       cheerio: 1.0.0-rc.12

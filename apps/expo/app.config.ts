@@ -20,20 +20,17 @@ const defineConfig = (): ExpoConfig => ({
 	},
 	assetBundlePatterns: ["**/*"],
 	ios: {
-		bundleIdentifier: "dev.movieweb.app",
+		bundleIdentifier: "dev.movieweb.mobile",
 		supportsTablet: true,
 		requireFullScreen: true,
 		infoPlist: {
 			CFBundleName: "movie-web",
 			NSPhotoLibraryUsageDescription:
 				"This app saves videos to the photo library.",
-			NSAppTransportSecurity: {
-				NSAllowsArbitraryLoads: true,
-			},
 		},
 	},
 	android: {
-		package: "dev.movieweb.app",
+		package: "dev.movieweb.mobile",
 		permissions: ["WRITE_SETTINGS"],
 	},
 	web: {

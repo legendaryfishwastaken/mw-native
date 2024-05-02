@@ -11,6 +11,7 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ResizeMode, Video } from "expo-av";
 import * as Haptics from "expo-haptics";
+import { useKeepAwake } from "expo-keep-awake";
 import * as NavigationBar from "expo-navigation-bar";
 import * as Network from "expo-network";
 import { useRouter } from "expo-router";
@@ -42,6 +43,7 @@ import { CaptionRenderer } from "./CaptionRenderer";
 import { ControlsOverlay } from "./ControlsOverlay";
 
 export const VideoPlayer = () => {
+  useKeepAwake();
   const {
     brightness,
     showBrightnessOverlay,
