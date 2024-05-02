@@ -14352,6 +14352,7 @@ packages:
     resolution: {tarball: https://codeload.github.com/sussy-code/providers/tar.gz/ead928c5d09cad1c23aeab58687d3fae7f426dba}
     name: '@movie-web/providers'
     version: 2.3.0
+    prepare: true
     requiresBuild: true
     dependencies:
       cheerio: 1.0.0-rc.12
