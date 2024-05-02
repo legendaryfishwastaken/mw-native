@@ -18,8 +18,8 @@
     "@movie-web/eslint-config": "workspace:^0.2.0",
     "@movie-web/prettier-config": "workspace:^0.1.0",
     "@movie-web/tsconfig": "workspace:^0.1.0",
-    "eslint": "^8.56.0",
-    "prettier": "^3.1.1",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
     "typescript": "^5.4.3"
   },
   "eslintConfig": {
@@ -28,9 +28,8 @@
     ]
   },
   "prettier": "@movie-web/prettier-config",
-  "trustedDependencies": ["@movie-web/providers"],
   "dependencies": {
-    "@movie-web/providers": "https://github.com/castdrian/providers-bun",
+    "@movie-web/providers": "workspace:*",
     "@nabla/vite-plugin-eslint": "^2.0.2",
     "@types/cookie": "^0.6.0",
     "@types/crypto-js": "^4.2.2",
