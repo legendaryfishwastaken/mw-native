@@ -1,10 +1,12 @@
 {
   "name": "@movie-web/native",
   "private": true,
-  "engines": {
-    "node": ">=20.11.0"
-  },
-  "packageManager": "pnpm@9.0.6",
+  "packageManager": "bun@1.1.6",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "tooling/*"
+  ],
   "scripts": {
     "build": "turbo build",
     "clean": "git clean -xdf node_modules",
@@ -14,8 +16,8 @@
     "format:fix": "turbo format --continue -- --write --cache --cache-location node_modules/.cache/.prettiercache",
     "lint": "turbo lint --continue -- --cache --cache-location node_modules/.cache/.eslintcache",
     "lint:fix": "turbo lint --continue -- --fix --cache --cache-location node_modules/.cache/.eslintcache",
-    "lint:ws": "pnpm dlx sherif@latest",
-    "postinstall": "pnpm lint:ws",
+    "lint:ws": "bunx sherif@latest",
+    "postinstall": "bun lint:ws",
     "typecheck": "turbo typecheck"
   },
   "devDependencies": {
@@ -25,6 +27,5 @@
     "turbo": "^1.11.3",
     "typescript": "^5.4.3"
   },
-  "prettier": "@movie-web/prettier-config",
-  "pnpm": {}
+  "prettier": "@movie-web/prettier-config"
 }
