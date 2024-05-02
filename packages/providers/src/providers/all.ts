@@ -1,4 +1,4 @@
-import { Embed, Sourcerer } from '@/providers/base';
+import type { Embed, Sourcerer } from '@/providers/base';
 import { doodScraper } from '@/providers/embeds/dood';
 import { droploadScraper } from '@/providers/embeds/dropload';
 import { febboxHlsScraper } from '@/providers/embeds/febbox/hls';
@@ -51,7 +51,7 @@ import { soaperTvScraper } from './sources/soapertv';
 import { vidSrcToScraper } from './sources/vidsrcto';
 import { warezcdnScraper } from './sources/warezcdn';
 
-export function gatherAllSources(): Array<Sourcerer> {
+export function gatherAllSources(): Sourcerer[] {
   // all sources are gathered here
   return [
     flixhqScraper,
@@ -78,7 +78,7 @@ export function gatherAllSources(): Array<Sourcerer> {
   ];
 }
 
-export function gatherAllEmbeds(): Array<Embed> {
+export function gatherAllEmbeds(): Embed[] {
   // all embeds are gathered here
   return [
     upcloudScraper,

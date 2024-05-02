@@ -1,8 +1,8 @@
 import { load } from 'cheerio';
 
-import { MovieMedia, ShowMedia } from '@/entrypoint/utils/media';
+import type { MovieMedia, ShowMedia } from '@/entrypoint/utils/media';
 import { flixHqBase } from '@/providers/sources/flixhq/common';
-import { ScrapeContext } from '@/utils/context';
+import type { ScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
 
 export async function getFlixhqSourceDetails(ctx: ScrapeContext, sourceId: string): Promise<string> {
@@ -59,12 +59,10 @@ export async function getFlixhqShowSources(ctx: ScrapeContext, media: ShowMedia,
   const seasonDoc = load(seasonData);
   const episode = seasonDoc('.nav-item > a')
     .toArray()
-    .map((el) => {
-      return {
+    .map((el) => ({
         id: seasonDoc(el).attr('data-id'),
         title: seasonDoc(el).attr('title'),
-      };
-    })
+      }))
     .find((e) => e.title?.startsWith(`Eps ${media.episode.number}`))?.id;
 
   if (!episode) throw new NotFoundError('episode not found');

@@ -1,10 +1,10 @@
 import { flags } from '@/entrypoint/utils/targets';
 import { makeSourcerer } from '@/providers/base';
-import { Caption } from '@/providers/captions';
+import type { Caption } from '@/providers/captions';
 import { NotFoundError } from '@/utils/errors';
 
 import { getCaptions } from './captions';
-import { Season } from './types';
+import type { Season } from './types';
 
 const insertUnitBase = 'https://api.insertunit.ws/';
 
@@ -80,7 +80,7 @@ export const insertunitScraper = makeSourcerer({
 
     let captions: Caption[] = [];
 
-    if (subtitleJSONData != null && subtitleJSONData[1] != null) {
+    if (subtitleJSONData?.[1] != null) {
       const subtitleData = JSON.parse(subtitleJSONData[1]);
       captions = await getCaptions(subtitleData);
     }

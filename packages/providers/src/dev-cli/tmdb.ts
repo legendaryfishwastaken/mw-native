@@ -1,5 +1,5 @@
 import { getConfig } from '@/dev-cli/config';
-import { MovieMedia, ShowMedia } from '@/entrypoint/utils/media';
+import type { MovieMedia, ShowMedia } from '@/entrypoint/utils/media';
 
 export async function makeTMDBRequest(url: string, appendToResponse?: string): Promise<Response> {
 	const headers: {

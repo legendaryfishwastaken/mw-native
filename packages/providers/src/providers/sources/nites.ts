@@ -1,8 +1,9 @@
 import { load } from 'cheerio';
 
-import { SourcererOutput, makeSourcerer } from '@/providers/base';
+import type { SourcererOutput} from '@/providers/base';
+import { makeSourcerer } from '@/providers/base';
 import { compareMedia } from '@/utils/compare';
-import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
+import type { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
 
 const baseUrl = 'https://w1.nites.is';

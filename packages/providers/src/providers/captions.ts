@@ -6,13 +6,13 @@ export const captionTypes = {
 };
 export type CaptionType = keyof typeof captionTypes;
 
-export type Caption = {
+export interface Caption {
   type: CaptionType;
   id: string; // only unique per stream
   url: string;
   hasCorsRestrictions: boolean;
   language: string;
-};
+}
 
 export function getCaptionTypeFromUrl(url: string): CaptionType | null {
   const extensions = Object.keys(captionTypes) as CaptionType[];

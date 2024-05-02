@@ -1,4 +1,4 @@
-import { CommonMedia } from '@/entrypoint/utils/media';
+import type { CommonMedia } from '@/entrypoint/utils/media';
 
 export function normalizeTitle(title: string): string {
   let titleTrimmed = title.trim().toLowerCase();

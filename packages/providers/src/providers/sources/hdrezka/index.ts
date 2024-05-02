@@ -1,9 +1,10 @@
 import { flags } from '@/entrypoint/utils/targets';
-import { SourcererOutput, makeSourcerer } from '@/providers/base';
-import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
+import type { SourcererOutput} from '@/providers/base';
+import { makeSourcerer } from '@/providers/base';
+import type { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
 
-import { MovieData, VideoLinks } from './types';
+import type { MovieData, VideoLinks } from './types';
 import { extractTitleAndYear, generateRandomFavs, parseSubtitleLinks, parseVideoLinks } from './utils';
 
 const rezkaBase = 'https://hdrzk.org';
@@ -94,7 +95,7 @@ async function getTranslatorId(
 
 const universalScraper = async (ctx: ShowScrapeContext | MovieScrapeContext): Promise<SourcererOutput> => {
   const result = await searchAndFindMediaId(ctx);
-  if (!result || !result.id) throw new NotFoundError('No result found');
+  if (!result?.id) throw new NotFoundError('No result found');
 
   const translatorId = await getTranslatorId(result.url, result.id, ctx);
   if (!translatorId) throw new NotFoundError('No translator id found');

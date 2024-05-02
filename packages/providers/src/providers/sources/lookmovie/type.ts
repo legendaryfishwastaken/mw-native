@@ -1,4 +1,4 @@
-import { MovieMedia } from '@/entrypoint/utils/media';
+import type { MovieMedia } from '@/entrypoint/utils/media';
 
 // ! Types
 interface BaseConfig {
@@ -35,9 +35,7 @@ export interface ShowDataResult {
   episodes: episodeObj[];
 }
 
-interface VideoSources {
-  [key: string]: string;
-}
+type VideoSources = Record<string, string>;
 
 interface VideoSubtitles {
   id?: number;

@@ -1,9 +1,10 @@
 import { load } from 'cheerio';
 import { unpack } from 'unpacker';
 
-import { SubtitleResult } from './types';
+import type { SubtitleResult } from './types';
 import { makeEmbed } from '../../base';
-import { Caption, getCaptionTypeFromUrl, labelToLanguageCode } from '../../captions';
+import type { Caption} from '../../captions';
+import { getCaptionTypeFromUrl, labelToLanguageCode } from '../../captions';
 
 const evalCodeRegex = /eval\((.*)\)/g;
 const fileRegex = /file:"(.*?)"/g;

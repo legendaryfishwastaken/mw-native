@@ -29,10 +29,10 @@ export const targets = {
 
 export type Targets = (typeof targets)[keyof typeof targets];
 
-export type FeatureMap = {
+export interface FeatureMap {
   requires: Flags[];
   disallowed: Flags[];
-};
+}
 
 export const targetToFeatures: Record<Targets, FeatureMap> = {
   browser: {

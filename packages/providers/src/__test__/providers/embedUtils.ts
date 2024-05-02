@@ -1,11 +1,11 @@
 import { buildProviders } from '@/entrypoint/builder';
-import { ScrapeMedia } from '@/entrypoint/utils/media';
+import type { ScrapeMedia } from '@/entrypoint/utils/media';
 import { targets } from '@/entrypoint/utils/targets';
 import { makeStandardFetcher } from '@/fetchers/standardFetch';
-import { Embed, Sourcerer, SourcererEmbed } from '@/providers/base';
-import { TestTypes } from './providerUtils';
+import type { Embed, Sourcerer, SourcererEmbed } from '@/providers/base';
+import type { TestTypes } from './providerUtils';
 import { describe, expect, it } from 'vitest';
-import { ProviderControls } from '@/entrypoint/controls';
+import type { ProviderControls } from '@/entrypoint/controls';
 import { makeSimpleProxyFetcher } from '@/fetchers/simpleProxy';
 
 export interface TestEmbedOptions {
@@ -80,7 +80,7 @@ export function testEmbed(ops: TestEmbedOptions) {
             });
           } catch (err) {
             it(`${t} - embed ??`, () => {
-              throw new Error('Failed to get streams: ' + err);
+              throw new Error(`Failed to get streams: ${  err}`);
             });
           }
         }

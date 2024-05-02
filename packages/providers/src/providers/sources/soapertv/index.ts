@@ -1,12 +1,14 @@
 import { load } from 'cheerio';
 
 import { flags } from '@/entrypoint/utils/targets';
-import { Caption, labelToLanguageCode } from '@/providers/captions';
-import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
+import type { Caption} from '@/providers/captions';
+import { labelToLanguageCode } from '@/providers/captions';
+import type { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
 
-import { InfoResponse } from './types';
-import { SourcererOutput, makeSourcerer } from '../../base';
+import type { InfoResponse } from './types';
+import type { SourcererOutput} from '../../base';
+import { makeSourcerer } from '../../base';
 
 const baseUrl = 'https://soaper.tv';
 

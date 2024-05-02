@@ -1,7 +1,7 @@
 import { load } from 'cheerio';
 import FormData from 'form-data';
 
-import { ScrapeContext } from '@/utils/context';
+import type { ScrapeContext } from '@/utils/context';
 
 import { kissasianBase } from './common';
 
@@ -18,10 +18,8 @@ export async function search(ctx: ScrapeContext, title: string, seasonNumber?: n
 
   const searchPage = load(searchResults);
 
-  return Array.from(searchPage('a')).map((drama) => {
-    return {
+  return Array.from(searchPage('a')).map((drama) => ({
       name: searchPage(drama).text(),
       url: drama.attribs.href,
-    };
-  });
+    }));
 }

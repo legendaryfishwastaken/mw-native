@@ -1,8 +1,9 @@
 import { flags } from '@/entrypoint/utils/targets';
-import { SourcererOutput, makeSourcerer } from '@/providers/base';
+import type { SourcererOutput} from '@/providers/base';
+import { makeSourcerer } from '@/providers/base';
 import { smashyStreamOScraper } from '@/providers/embeds/smashystream/opstream';
 import { smashyStreamFScraper } from '@/providers/embeds/smashystream/video1';
-import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
+import type { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 
 const universalScraper = async (ctx: ShowScrapeContext | MovieScrapeContext): Promise<SourcererOutput> => {
   // theres no point in fetching the player page

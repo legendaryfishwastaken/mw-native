@@ -1,7 +1,7 @@
 import { flags } from '@/entrypoint/utils/targets';
 import { makeEmbed } from '@/providers/base';
 import { warezcdnWorkerProxy } from '@/providers/sources/warezcdn/common';
-import { EmbedScrapeContext } from '@/utils/context';
+import type { EmbedScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
 
 import { getDecryptedId } from './common';

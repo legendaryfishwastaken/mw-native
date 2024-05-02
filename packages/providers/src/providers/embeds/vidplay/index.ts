@@ -1,8 +1,9 @@
 import { makeEmbed } from '@/providers/base';
-import { Caption, getCaptionTypeFromUrl, labelToLanguageCode } from '@/providers/captions';
+import type { Caption} from '@/providers/captions';
+import { getCaptionTypeFromUrl, labelToLanguageCode } from '@/providers/captions';
 
 import { getFileUrl } from './common';
-import { SubtitleResult, ThumbnailTrack, VidplaySourceResponse } from './types';
+import type { SubtitleResult, ThumbnailTrack, VidplaySourceResponse } from './types';
 
 export const vidplayScraper = makeEmbed({
   id: 'vidplay',

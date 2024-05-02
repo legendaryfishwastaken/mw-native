@@ -1,6 +1,6 @@
 import { makeFullUrl } from '@/fetchers/common';
 import { decodeData } from '@/providers/sources/vidsrcto/common';
-import { EmbedScrapeContext } from '@/utils/context';
+import type { EmbedScrapeContext } from '@/utils/context';
 
 export const vidplayBase = 'https://vidplay.online';
 export const referer = `${vidplayBase}/`;

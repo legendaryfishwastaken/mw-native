@@ -5,7 +5,8 @@ import { flags } from '@/entrypoint/utils/targets';
 import { NotFoundError } from '@/utils/errors';
 
 import { makeEmbed } from '../base';
-import { Caption, getCaptionTypeFromUrl, labelToLanguageCode } from '../captions';
+import type { Caption} from '../captions';
+import { getCaptionTypeFromUrl, labelToLanguageCode } from '../captions';
 
 const referer = 'https://ridomovies.tv/';
 

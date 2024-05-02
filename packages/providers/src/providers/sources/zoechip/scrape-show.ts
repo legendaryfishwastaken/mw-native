@@ -1,7 +1,7 @@
 import { createZoeChipStreamData } from '@/providers/sources/zoechip/common';
 import { getZoeChipEpisodeID, getZoeChipSeasonID } from '@/providers/sources/zoechip/scrape';
 import { getZoeChipShowID } from '@/providers/sources/zoechip/search';
-import { ShowScrapeContext } from '@/utils/context';
+import type { ShowScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
 
 export async function scrapeShow(ctx: ShowScrapeContext) {

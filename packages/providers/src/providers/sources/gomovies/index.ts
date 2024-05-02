@@ -131,7 +131,7 @@ export const goMoviesScraper = makeSourcerer({
       .filter((embed) => embed.url)
       .map((embed) => ({
         embedId: embed.embedId,
-        url: embed.url as string,
+        url: embed.url!,
       }));
 
     if (filteredEmbeds.length === 0) throw new Error('No valid embeds found.');
@@ -213,7 +213,7 @@ export const goMoviesScraper = makeSourcerer({
       .filter((embed) => embed.url)
       .map((embed) => ({
         embedId: embed.embedId,
-        url: embed.url as string,
+        url: embed.url!,
       }));
 
     if (filteredEmbeds.length === 0) throw new Error('No valid embeds found.');

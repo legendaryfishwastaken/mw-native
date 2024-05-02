@@ -1,5 +1,5 @@
 import { warezcdnPlayerBase } from '@/providers/sources/warezcdn/common';
-import { EmbedScrapeContext } from '@/utils/context';
+import type { EmbedScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
 
 function decrypt(input: string) {

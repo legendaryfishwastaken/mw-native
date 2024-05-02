@@ -1,7 +1,7 @@
 import { serializeBody } from '@/fetchers/body';
 import { makeFullUrl } from '@/fetchers/common';
-import { FetchLike, FetchReply } from '@/fetchers/fetch';
-import { Fetcher } from '@/fetchers/types';
+import type { FetchLike, FetchReply } from '@/fetchers/fetch';
+import type { Fetcher } from '@/fetchers/types';
 
 function getHeaders(list: string[], res: FetchReply): Headers {
   const output = new Headers();

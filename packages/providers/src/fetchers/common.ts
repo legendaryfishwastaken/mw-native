@@ -1,4 +1,4 @@
-import { Fetcher, FetcherOptions, UseableFetcher } from '@/fetchers/types';
+import type { Fetcher, FetcherOptions, UseableFetcher } from '@/fetchers/types';
 
 export type FullUrlOptions = Pick<FetcherOptions, 'query' | 'baseUrl'>;
 
@@ -27,8 +27,7 @@ export function makeFullUrl(url: string, ops?: FullUrlOptions): string {
 }
 
 export function makeFetcher(fetcher: Fetcher): UseableFetcher {
-  const newFetcher = (url: string, ops?: FetcherOptions) => {
-    return fetcher(url, {
+  const newFetcher = (url: string, ops?: FetcherOptions) => fetcher(url, {
       headers: ops?.headers ?? {},
       method: ops?.method ?? 'GET',
       query: ops?.query ?? {},
@@ -36,7 +35,6 @@ export function makeFetcher(fetcher: Fetcher): UseableFetcher {
       readHeaders: ops?.readHeaders ?? [],
       body: ops?.body,
     });
-  };
   const output: UseableFetcher = async (url, ops) => (await newFetcher(url, ops)).body;
   output.full = newFetcher;
   return output;

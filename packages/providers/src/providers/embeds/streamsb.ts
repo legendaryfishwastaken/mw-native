@@ -5,8 +5,8 @@ import FormData from 'form-data';
 
 import { flags } from '@/entrypoint/utils/targets';
 import { makeEmbed } from '@/providers/base';
-import { StreamFile } from '@/providers/streams';
-import { EmbedScrapeContext } from '@/utils/context';
+import type { StreamFile } from '@/providers/streams';
+import type { EmbedScrapeContext } from '@/utils/context';
 
 async function fetchCaptchaToken(ctx: EmbedScrapeContext, domain: string, recaptchaKey: string) {
   const domainHash = Base64.stringify(Utf8.parse(domain)).replace(/=/g, '.');
@@ -150,7 +150,7 @@ export const streamsbScraper = makeEmbed({
       (a, v) => {
         a[v.quality] = {
           type: 'mp4',
-          url: v.url as string,
+          url: v.url!,
         };
         return a;
       },

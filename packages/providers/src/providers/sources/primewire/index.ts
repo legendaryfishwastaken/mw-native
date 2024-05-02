@@ -2,7 +2,7 @@ import { load } from 'cheerio';
 
 import { flags } from '@/entrypoint/utils/targets';
 import { makeSourcerer } from '@/providers/base';
-import { ScrapeContext } from '@/utils/context';
+import type { ScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
 
 import { primewireApiKey, primewireBase } from './common';
@@ -108,9 +108,7 @@ export const primewireScraper = makeSourcerer({
 
     const episodeLink = seasonPage(`.show_season[data-id='${ctx.media.season.number}'] > div > a`)
       .toArray()
-      .find((link) => {
-        return link.attribs.href.includes(`-episode-${ctx.media.episode.number}`);
-      })?.attribs.href;
+      .find((link) => link.attribs.href.includes(`-episode-${ctx.media.episode.number}`))?.attribs.href;
 
     if (!episodeLink) throw new NotFoundError('No episode links found');
 

@@ -10,24 +10,24 @@ import { getBuiltinEmbeds, getBuiltinSources } from '@/entrypoint/providers';
 
 dotenv.config();
 
-type ProviderSourceAnswers = {
+interface ProviderSourceAnswers {
 	id: string;
 	type: string;
-};
+}
 
-type EmbedSourceAnswers = {
+interface EmbedSourceAnswers {
 	url: string;
-};
+}
 
-type CommonAnswers = {
+interface CommonAnswers {
 	fetcher: string;
 	source: string;
-};
+}
 
-type ShowAnswers = {
+interface ShowAnswers {
 	season: string;
 	episode: string;
-};
+}
 
 const sourceScrapers = getBuiltinSources().sort((a, b) => b.rank - a.rank);
 const embedScrapers = getBuiltinEmbeds().sort((a, b) => b.rank - a.rank);
@@ -36,9 +36,7 @@ const sources = [...sourceScrapers, ...embedScrapers];
 function joinMediaTypes(mediaTypes: string[] | undefined) {
 	if (mediaTypes) {
 		const formatted = mediaTypes
-			.map((type: string) => {
-				return `${type[0].toUpperCase() + type.substring(1).toLowerCase()}s`;
-			})
+			.map((type: string) => `${type[0].toUpperCase() + type.substring(1).toLowerCase()}s`)
 			.join(' / ');
 
 		return `(${formatted})`;

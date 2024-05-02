@@ -1,15 +1,15 @@
-import { MovieMedia, ShowMedia } from '@/entrypoint/utils/media';
-import { UseableFetcher } from '@/fetchers/types';
+import type { MovieMedia, ShowMedia } from '@/entrypoint/utils/media';
+import type { UseableFetcher } from '@/fetchers/types';
 
-export type ScrapeContext = {
+export interface ScrapeContext {
   proxiedFetcher: UseableFetcher;
   fetcher: UseableFetcher;
   progress(val: number): void;
-};
+}
 
-export type EmbedInput = {
+export interface EmbedInput {
   url: string;
-};
+}
 
 export type EmbedScrapeContext = EmbedInput & ScrapeContext;
 

@@ -1,11 +1,11 @@
 import nodeFetch from 'node-fetch';
 
-import { Embed, Sourcerer } from '@/providers/base';
-import { ProviderMakerOptions } from '@/entrypoint/declare';
+import type { Embed, Sourcerer } from '@/providers/base';
+import type { ProviderMakerOptions } from '@/entrypoint/declare';
 import { targets } from '@/entrypoint/utils/targets';
 import { makeStandardFetcher } from '@/fetchers/standardFetch';
 
-export type CommandLineArguments = {
+export interface CommandLineArguments {
   fetcher: string;
   sourceId: string;
   tmdbId: string;
@@ -13,9 +13,9 @@ export type CommandLineArguments = {
   season: string;
   episode: string;
   url: string;
-};
+}
 
-export async function processOptions(sources: Array<Embed | Sourcerer>, options: CommandLineArguments) {
+export async function processOptions(sources: (Embed | Sourcerer)[], options: CommandLineArguments) {
   const fetcherOptions = ['node-fetch', 'native', 'browser'];
   if (!fetcherOptions.includes(options.fetcher)) {
     throw new Error(`Fetcher must be any of: ${fetcherOptions.join()}`);

@@ -1,20 +1,20 @@
-import { Flags } from '@/entrypoint/utils/targets';
-import { Stream } from '@/providers/streams';
-import { EmbedScrapeContext, MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
+import type { Flags } from '@/entrypoint/utils/targets';
+import type { Stream } from '@/providers/streams';
+import type { EmbedScrapeContext, MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 
 export type MediaScraperTypes = 'show' | 'movie';
 
-export type SourcererEmbed = {
+export interface SourcererEmbed {
   embedId: string;
   url: string;
-};
+}
 
-export type SourcererOutput = {
+export interface SourcererOutput {
   embeds: SourcererEmbed[];
   stream?: Stream[];
-};
+}
 
-export type SourcererOptions = {
+export interface SourcererOptions {
   id: string;
   name: string; // displayed in the UI
   rank: number; // the higher the number, the earlier it gets put on the queue
@@ -22,7 +22,7 @@ export type SourcererOptions = {
   flags: Flags[];
   scrapeMovie?: (input: MovieScrapeContext) => Promise<SourcererOutput>;
   scrapeShow?: (input: ShowScrapeContext) => Promise<SourcererOutput>;
-};
+}
 
 export type Sourcerer = SourcererOptions & {
   type: 'source';
@@ -42,17 +42,17 @@ export function makeSourcerer(state: SourcererOptions): Sourcerer {
   };
 }
 
-export type EmbedOutput = {
+export interface EmbedOutput {
   stream: Stream[];
-};
+}
 
-export type EmbedOptions = {
+export interface EmbedOptions {
   id: string;
   name: string; // displayed in the UI
   rank: number; // the higher the number, the earlier it gets put on the queue
   disabled?: boolean;
   scrape: (input: EmbedScrapeContext) => Promise<EmbedOutput>;
-};
+}
 
 export type Embed = EmbedOptions & {
   type: 'embed';

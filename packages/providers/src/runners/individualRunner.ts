@@ -1,21 +1,22 @@
-import { IndividualScraperEvents } from '@/entrypoint/utils/events';
-import { ScrapeMedia } from '@/entrypoint/utils/media';
-import { FeatureMap, flagsAllowedInFeatures } from '@/entrypoint/utils/targets';
-import { UseableFetcher } from '@/fetchers/types';
-import { EmbedOutput, SourcererOutput } from '@/providers/base';
-import { ProviderList } from '@/providers/get';
-import { ScrapeContext } from '@/utils/context';
+import type { IndividualScraperEvents } from '@/entrypoint/utils/events';
+import type { ScrapeMedia } from '@/entrypoint/utils/media';
+import type { FeatureMap} from '@/entrypoint/utils/targets';
+import { flagsAllowedInFeatures } from '@/entrypoint/utils/targets';
+import type { UseableFetcher } from '@/fetchers/types';
+import type { EmbedOutput, SourcererOutput } from '@/providers/base';
+import type { ProviderList } from '@/providers/get';
+import type { ScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
 import { isValidStream, validatePlayableStreams } from '@/utils/valid';
 
-export type IndividualSourceRunnerOptions = {
+export interface IndividualSourceRunnerOptions {
   features: FeatureMap;
   fetcher: UseableFetcher;
   proxiedFetcher: UseableFetcher;
   media: ScrapeMedia;
   id: string;
   events?: IndividualScraperEvents;
-};
+}
 
 export async function scrapeInvidualSource(
   list: ProviderList,
@@ -78,14 +79,14 @@ export async function scrapeInvidualSource(
   return output;
 }
 
-export type IndividualEmbedRunnerOptions = {
+export interface IndividualEmbedRunnerOptions {
   features: FeatureMap;
   fetcher: UseableFetcher;
   proxiedFetcher: UseableFetcher;
   url: string;
   id: string;
   events?: IndividualScraperEvents;
-};
+}
 
 export async function scrapeIndividualEmbed(
   list: ProviderList,

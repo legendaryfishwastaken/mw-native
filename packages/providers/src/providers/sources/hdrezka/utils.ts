@@ -1,5 +1,5 @@
 import { getCaptionTypeFromUrl, labelToLanguageCode } from '@/providers/captions';
-import { FileBasedStream } from '@/providers/streams';
+import type { FileBasedStream } from '@/providers/streams';
 import { NotFoundError } from '@/utils/errors';
 import { getValidQualityFromString } from '@/utils/quality';
 

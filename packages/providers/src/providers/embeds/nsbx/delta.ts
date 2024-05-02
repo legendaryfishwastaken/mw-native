@@ -1,4 +1,5 @@
-import { EmbedOutput, makeEmbed } from '@/providers/base';
+import type { EmbedOutput} from '@/providers/base';
+import { makeEmbed } from '@/providers/base';
 import { headers } from '@/providers/sources/nsbx';
 
 export const deltaScraper = makeEmbed({

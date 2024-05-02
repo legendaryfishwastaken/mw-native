@@ -1,6 +1,7 @@
-import { MediaTypes } from '@/entrypoint/utils/media';
-import { FebboxFileList, febBoxBase } from '@/providers/embeds/febbox/common';
-import { EmbedScrapeContext } from '@/utils/context';
+import type { MediaTypes } from '@/entrypoint/utils/media';
+import type { FebboxFileList} from '@/providers/embeds/febbox/common';
+import { febBoxBase } from '@/providers/embeds/febbox/common';
+import type { EmbedScrapeContext } from '@/utils/context';
 
 export async function getFileList(
   ctx: EmbedScrapeContext,

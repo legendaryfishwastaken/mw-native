@@ -1,7 +1,8 @@
 import { makeControls } from '@/entrypoint/controls';
 import { getBuiltinEmbeds, getBuiltinSources } from '@/entrypoint/providers';
-import { Targets, getTargetFeatures } from '@/entrypoint/utils/targets';
-import { Fetcher } from '@/fetchers/types';
+import type { Targets} from '@/entrypoint/utils/targets';
+import { getTargetFeatures } from '@/entrypoint/utils/targets';
+import type { Fetcher } from '@/fetchers/types';
 import { getProviders } from '@/providers/get';
 
 export interface ProviderMakerOptions {

@@ -1,6 +1,7 @@
-import { Caption, removeDuplicatedLanguages } from '@/providers/captions';
+import type { Caption} from '@/providers/captions';
+import { removeDuplicatedLanguages } from '@/providers/captions';
 
-import { Subtitle } from './types';
+import type { Subtitle } from './types';
 
 export async function getCaptions(data: Subtitle[]) {
   let captions: Caption[] = [];

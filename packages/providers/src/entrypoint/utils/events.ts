@@ -1,32 +1,32 @@
 export type UpdateEventStatus = 'success' | 'failure' | 'notfound' | 'pending';
 
-export type UpdateEvent = {
+export interface UpdateEvent {
   id: string; // id presented in start event
   percentage: number;
   status: UpdateEventStatus;
   error?: unknown; // set when status is failure
   reason?: string; // set when status is not-found
-};
+}
 
-export type InitEvent = {
+export interface InitEvent {
   sourceIds: string[]; // list of source ids
-};
+}
 
-export type DiscoverEmbedsEvent = {
+export interface DiscoverEmbedsEvent {
   sourceId: string;
 
   // list of embeds that will be scraped in order
-  embeds: Array<{
+  embeds: {
     id: string;
     embedScraperId: string;
-  }>;
-};
+  }[];
+}
 
-export type SingleScraperEvents = {
+export interface SingleScraperEvents {
   update?: (evt: UpdateEvent) => void;
-};
+}
 
-export type FullScraperEvents = {
+export interface FullScraperEvents {
   // update progress percentage and status of the currently scraping item
   update?: (evt: UpdateEvent) => void;
 
@@ -39,9 +39,9 @@ export type FullScraperEvents = {
 
   // start scraping an item.
   start?: (id: string) => void;
-};
+}
 
-export type IndividualScraperEvents = {
+export interface IndividualScraperEvents {
   // update progress percentage and status of the currently scraping item
   update?: (evt: UpdateEvent) => void;
-};
+}

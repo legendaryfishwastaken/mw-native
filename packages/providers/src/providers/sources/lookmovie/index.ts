@@ -1,6 +1,7 @@
 import { flags } from '@/entrypoint/utils/targets';
-import { SourcererOutput, makeSourcerer } from '@/providers/base';
-import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
+import type { SourcererOutput} from '@/providers/base';
+import { makeSourcerer } from '@/providers/base';
+import type { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
 
 import { scrape, searchAndFindMedia } from './util';

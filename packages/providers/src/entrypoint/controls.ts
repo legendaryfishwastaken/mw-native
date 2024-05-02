@@ -1,12 +1,14 @@
-import { FullScraperEvents, IndividualScraperEvents } from '@/entrypoint/utils/events';
-import { ScrapeMedia } from '@/entrypoint/utils/media';
-import { MetaOutput, getAllEmbedMetaSorted, getAllSourceMetaSorted, getSpecificId } from '@/entrypoint/utils/meta';
-import { FeatureMap } from '@/entrypoint/utils/targets';
+import type { FullScraperEvents, IndividualScraperEvents } from '@/entrypoint/utils/events';
+import type { ScrapeMedia } from '@/entrypoint/utils/media';
+import type { MetaOutput} from '@/entrypoint/utils/meta';
+import { getAllEmbedMetaSorted, getAllSourceMetaSorted, getSpecificId } from '@/entrypoint/utils/meta';
+import type { FeatureMap } from '@/entrypoint/utils/targets';
 import { makeFetcher } from '@/fetchers/common';
-import { Fetcher } from '@/fetchers/types';
-import { Embed, EmbedOutput, Sourcerer, SourcererOutput } from '@/providers/base';
+import type { Fetcher } from '@/fetchers/types';
+import type { Embed, EmbedOutput, Sourcerer, SourcererOutput } from '@/providers/base';
 import { scrapeIndividualEmbed, scrapeInvidualSource } from '@/runners/individualRunner';
-import { RunOutput, runAllProviders } from '@/runners/runner';
+import type { RunOutput} from '@/runners/runner';
+import { runAllProviders } from '@/runners/runner';
 
 export interface ProviderControlsInput {
   fetcher: Fetcher;

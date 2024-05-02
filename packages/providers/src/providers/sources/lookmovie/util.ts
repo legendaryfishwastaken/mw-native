@@ -1,9 +1,9 @@
-import { MovieMedia, ShowMedia } from '@/entrypoint/utils/media';
+import type { MovieMedia, ShowMedia } from '@/entrypoint/utils/media';
 import { compareMedia } from '@/utils/compare';
-import { ScrapeContext } from '@/utils/context';
+import type { ScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
 
-import { Result, ResultItem, ShowDataResult, episodeObj } from './type';
+import type { Result, ResultItem, ShowDataResult, episodeObj } from './type';
 import { getVideo } from './video';
 
 export const baseUrl = 'https://lmscript.xyz';
@@ -46,9 +46,7 @@ export async function scrape(ctx: ScrapeContext, media: MovieMedia | ShowMedia, 
       query: { expand: 'episodes', id: result.id_show },
     });
 
-    const episode = data.episodes?.find((v: episodeObj) => {
-      return Number(v.season) === Number(media.season.number) && Number(v.episode) === Number(media.episode.number);
-    });
+    const episode = data.episodes?.find((v: episodeObj) => Number(v.season) === Number(media.season.number) && Number(v.episode) === Number(media.episode.number));
 
     if (episode) id = episode.id;
   }

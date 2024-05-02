@@ -1,10 +1,11 @@
 import { load } from 'cheerio';
 
-import { SourcererEmbed, SourcererOutput, makeSourcerer } from '@/providers/base';
-import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
+import type { SourcererEmbed, SourcererOutput} from '@/providers/base';
+import { makeSourcerer } from '@/providers/base';
+import type { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 
 import { decryptSourceUrl } from './common';
-import { SourceResult, SourcesResult } from './types';
+import type { SourceResult, SourcesResult } from './types';
 
 const vidSrcToBase = 'https://vidsrc.to';
 const referer = `${vidSrcToBase}/`;

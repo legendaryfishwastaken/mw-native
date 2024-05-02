@@ -1,6 +1,6 @@
 import { createZoeChipStreamData } from '@/providers/sources/zoechip/common';
 import { getZoeChipMovieID } from '@/providers/sources/zoechip/search';
-import { MovieScrapeContext } from '@/utils/context';
+import type { MovieScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
 
 export async function scrapeMovie(ctx: MovieScrapeContext) {

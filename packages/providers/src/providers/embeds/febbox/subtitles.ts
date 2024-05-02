@@ -1,12 +1,13 @@
+import type {
+  Caption} from '@/providers/captions';
 import {
-  Caption,
   getCaptionTypeFromUrl,
   isValidLanguageCode,
   removeDuplicatedLanguages as removeDuplicateLanguages,
 } from '@/providers/captions';
 import { captionsDomains } from '@/providers/sources/showbox/common';
 import { sendRequest } from '@/providers/sources/showbox/sendRequest';
-import { ScrapeContext } from '@/utils/context';
+import type { ScrapeContext } from '@/utils/context';
 
 interface CaptionApiResponse {
   data: {
@@ -50,9 +51,7 @@ export async function getSubtitles(
     const subtitleFilePath = subtitle.file_path
       .replace(captionsDomains[0], captionsDomains[1])
       .replace(/\s/g, '+')
-      .replace(/[()]/g, (c) => {
-        return `%${c.charCodeAt(0).toString(16)}`;
-      });
+      .replace(/[()]/g, (c) => `%${c.charCodeAt(0).toString(16)}`);
 
     const subtitleType = getCaptionTypeFromUrl(subtitleFilePath);
     if (!subtitleType) return;

@@ -1,9 +1,9 @@
-export type CommonMedia = {
+export interface CommonMedia {
   title: string;
   releaseYear: number;
   imdbId?: string;
   tmdbId: string;
-};
+}
 
 export type MediaTypes = 'show' | 'movie';
 

@@ -1,5 +1,6 @@
 import { makeSimpleProxyFetcher } from '@/fetchers/simpleProxy';
-import { DefaultedFetcherOptions, FetcherOptions } from '@/fetchers/types';
+import type { DefaultedFetcherOptions} from '@/fetchers/types';
+import { FetcherOptions } from '@/fetchers/types';
 import { Headers } from 'node-fetch';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 

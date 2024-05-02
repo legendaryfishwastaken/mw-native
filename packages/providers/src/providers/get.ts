@@ -1,5 +1,6 @@
-import { FeatureMap, flagsAllowedInFeatures } from '@/entrypoint/utils/targets';
-import { Embed, Sourcerer } from '@/providers/base';
+import type { FeatureMap} from '@/entrypoint/utils/targets';
+import { flagsAllowedInFeatures } from '@/entrypoint/utils/targets';
+import type { Embed, Sourcerer } from '@/providers/base';
 import { hasDuplicates } from '@/utils/predicates';
 
 export interface ProviderList {

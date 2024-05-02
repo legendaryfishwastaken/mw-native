@@ -1,6 +1,6 @@
 import { mockEmbeds, mockSources } from '../providerTests';
 import { getBuiltinEmbeds, getBuiltinSources } from '@/entrypoint/providers';
-import { FeatureMap } from '@/entrypoint/utils/targets';
+import type { FeatureMap } from '@/entrypoint/utils/targets';
 import { getProviders } from '@/providers/get';
 import { vi, describe, it, expect, afterEach } from 'vitest';
 
