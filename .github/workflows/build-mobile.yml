@@ -56,6 +56,7 @@ jobs:
 
   build-ios:
     runs-on: macos-14
+    if: github.repository_owner != 'JorrinKievit'
 
     steps:
       - name: Checkout code
