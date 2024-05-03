@@ -115,7 +115,7 @@ const VideoSlider = ({ onSlidingComplete }: VideoSliderProps) => {
   const bufferStyle = useAnimatedStyle(() => {
     return {
       width: bufferTranslateX.value + knobSize_,
-      backgroundColor: theme.ash300.val,
+      backgroundColor: theme.ash100.val,
       borderRadius: trackSize_ / 2,
     };
   });

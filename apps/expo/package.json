@@ -103,7 +103,9 @@
       "@movie-web/eslint-config/base",
       "@movie-web/eslint-config/react"
     ],
-    "ignorePatterns": ["expo-plugins/**"]
+    "ignorePatterns": [
+      "expo-plugins/**"
+    ]
   },
   "prettier": "@movie-web/prettier-config"
 }
