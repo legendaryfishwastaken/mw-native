@@ -60,7 +60,7 @@ const defineConfig = (): ExpoConfig => ({
           newArchEnabled: false,
           minSdkVersion: 24,
           packagingOptions: {
-			  pickFirst: ['**/libcrypto.so'],
+            pickFirst: ["**/libcrypto.so"],
           },
         },
       },
