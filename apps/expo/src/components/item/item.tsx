@@ -1,14 +1,14 @@
-import type { NativeSyntheticEvent } from "react-native";
-import type { ContextMenuOnPressNativeEvent } from "react-native-context-menu-view";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Keyboard, TouchableOpacity } from "react-native";
-import ContextMenu from "react-native-context-menu-view";
+import * as Haptics from "expo-haptics";
 import { useRouter } from "expo-router";
-import { Image, Text, View } from "tamagui";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Image, Sheet, Text, useTheme, View } from "tamagui";
 
 import { useToast } from "~/hooks/useToast";
 import { usePlayerStore } from "~/stores/player/store";
 import { useBookmarkStore, useWatchHistoryStore } from "~/stores/settings";
+import { Settings } from "../player/settings/Sheet";
 
 export interface ItemData {
   id: string;
@@ -41,6 +41,83 @@ function checkReleased(media: ItemData): boolean {
 
   return isReleased;
 }
+interface Action {
+  title: string;
+  onPress: () => void;
+}
+
+interface SheetContextMenuProps {
+  isOpen: boolean;
+  actions: Action[];
+  onClose: () => void;
+}
+
+const SheetContextMenu: React.FC<SheetContextMenuProps> = ({
+  isOpen,
+  actions,
+  onClose,
+}) => {
+  const theme = useTheme();
+
+  const iconMap: Record<string, any> = {
+    [ContextMenuActions.Bookmark]: "bookmark-outline",
+    [ContextMenuActions.RemoveBookmark]: "bookmark-off-outline",
+    [ContextMenuActions.Download]: "download-outline",
+    [ContextMenuActions.RemoveWatchHistoryItem]: "clock-remove-outline",
+  };
+
+  return (
+    <Sheet
+      modal
+      open={isOpen}
+      onOpenChange={onClose}
+      snapPoints={[35]}
+      dismissOnSnapToBottom
+      dismissOnOverlayPress
+      animationConfig={{
+        type: "spring",
+        damping: 20,
+        mass: 1.2,
+        stiffness: 250,
+      }}
+    >
+      <Sheet.Handle backgroundColor="$sheetHandle" />
+      <Sheet.Frame
+        backgroundColor="$sheetBackground"
+        padding="$4"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Settings.Content>
+          {actions.map((action, index) => (
+            <Settings.Item
+              key={index}
+              title={action.title}
+              iconRight={
+                <MaterialCommunityIcons
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                  name={iconMap[action.title]}
+                  size={24}
+                  color={theme.sheetItemSelected.val}
+                />
+              }
+              onPress={() => {
+                action.onPress();
+                onClose();
+              }}
+            />
+          ))}
+        </Settings.Content>
+      </Sheet.Frame>
+      <Sheet.Overlay
+        animation="lazy"
+        backgroundColor="rgba(0, 0, 0, 0.8)"
+        enterStyle={{ opacity: 0 }}
+        exitStyle={{ opacity: 0 }}
+      />
+    </Sheet>
+  );
+};
 
 export default function Item({ data }: { data: ItemData }) {
   const resetVideo = usePlayerStore((state) => state.resetVideo);
@@ -69,66 +146,75 @@ export default function Item({ data }: { data: ItemData }) {
     });
   };
 
-  const contextMenuActions = [
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleLongPress = () => {
+    void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+    setMenuOpen(true);
+  };
+
+  const contextMenuActions: Action[] = [
     {
       title: isBookmarked(data)
         ? ContextMenuActions.RemoveBookmark
         : ContextMenuActions.Bookmark,
+      onPress: () => {
+        if (isBookmarked(data)) {
+          removeBookmark(data);
+          showToast("Removed from bookmarks", {
+            burntOptions: { preset: "done" },
+          });
+        } else {
+          addBookmark(data);
+          showToast("Added to bookmarks", { burntOptions: { preset: "done" } });
+        }
+      },
     },
-    ...(type === "movie" ? [{ title: ContextMenuActions.Download }] : []),
+    ...(data.type === "movie"
+      ? [
+          {
+            title: ContextMenuActions.Download,
+            onPress: () => {
+              router.push({
+                pathname: "/videoPlayer",
+                params: { data: JSON.stringify(data), download: "true" },
+              });
+            },
+          },
+        ]
+      : []),
     ...(hasWatchHistoryItem(data)
-      ? [{ title: ContextMenuActions.RemoveWatchHistoryItem }]
+      ? [
+          {
+            title: ContextMenuActions.RemoveWatchHistoryItem,
+            onPress: () => {
+              removeFromWatchHistory(data);
+              showToast("Removed from Continue Watching", {
+                burntOptions: { preset: "done" },
+              });
+            },
+          },
+        ]
       : []),
   ];
-
-  const onContextMenuPress = (
-    e: NativeSyntheticEvent<ContextMenuOnPressNativeEvent>,
-  ) => {
-    if (e.nativeEvent.name === ContextMenuActions.Bookmark) {
-      addBookmark(data);
-      showToast("Added to bookmarks", {
-        burntOptions: { preset: "done" },
-      });
-    } else if (e.nativeEvent.name === ContextMenuActions.RemoveBookmark) {
-      removeBookmark(data);
-      showToast("Removed from bookmarks", {
-        burntOptions: { preset: "done" },
-      });
-    } else if (e.nativeEvent.name === ContextMenuActions.Download) {
-      router.push({
-        pathname: "/videoPlayer",
-        params: { data: JSON.stringify(data), download: "true" },
-      });
-    } else if (
-      e.nativeEvent.name === ContextMenuActions.RemoveWatchHistoryItem
-    ) {
-      removeFromWatchHistory(data);
-      showToast("Removed from Continue Watching", {
-        burntOptions: { preset: "done" },
-      });
-    }
-  };
 
   return (
     <TouchableOpacity
       onPress={handlePress}
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      onLongPress={() => {}}
+      onLongPress={handleLongPress}
       style={{ width: "100%" }}
     >
       <View width="100%">
-        <ContextMenu actions={contextMenuActions} onPress={onContextMenuPress}>
-          <View
-            marginBottom={4}
-            aspectRatio={9 / 14}
-            width="100%"
-            overflow="hidden"
-            borderRadius={24}
-            height="$14"
-          >
-            <Image source={{ uri: posterUrl }} width="100%" height="100%" />
-          </View>
-        </ContextMenu>
+        <View
+          marginBottom={4}
+          aspectRatio={9 / 14}
+          width="100%"
+          overflow="hidden"
+          borderRadius={24}
+          height="$14"
+        >
+          <Image source={{ uri: posterUrl }} width="100%" height="100%" />
+        </View>
         <Text fontWeight="bold" fontSize={14}>
           {title}
         </Text>
@@ -147,6 +233,11 @@ export default function Item({ data }: { data: ItemData }) {
           </Text>
         </View>
       </View>
+      <SheetContextMenu
+        isOpen={menuOpen}
+        actions={contextMenuActions}
+        onClose={() => setMenuOpen(false)}
+      />
     </TouchableOpacity>
   );
 }
