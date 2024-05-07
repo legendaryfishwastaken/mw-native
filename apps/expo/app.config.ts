@@ -60,12 +60,7 @@ const defineConfig = (): ExpoConfig => ({
           newArchEnabled: false,
           minSdkVersion: 24,
           packagingOptions: {
-            pickFirst: [
-              "lib/x86/libcrypto.so",
-              "lib/x86_64/libcrypto.so",
-              "lib/armeabi-v7a/libcrypto.so",
-              "lib/arm64-v8a/libcrypto.so",
-            ],
+			  pickFirst: ['**/libcrypto.so'],
           },
         },
       },
