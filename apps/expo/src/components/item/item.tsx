@@ -2,13 +2,13 @@ import { useCallback, useState } from "react";
 import { Keyboard, TouchableOpacity } from "react-native";
 import * as Haptics from "expo-haptics";
 import { useRouter } from "expo-router";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Image, Sheet, Text, useTheme, View } from "tamagui";
+import { Image, Text, View } from "tamagui";
 
+import type { Action } from "./ContextMenu";
 import { useToast } from "~/hooks/useToast";
 import { usePlayerStore } from "~/stores/player/store";
 import { useBookmarkStore, useWatchHistoryStore } from "~/stores/settings";
-import { Settings } from "../player/settings/Sheet";
+import { ContextMenuActions, SheetContextMenu } from "./ContextMenu";
 
 export interface ItemData {
   id: string;
@@ -19,13 +19,6 @@ export interface ItemData {
   year: number;
   release_date?: Date;
   posterUrl: string;
-}
-
-enum ContextMenuActions {
-  Bookmark = "Bookmark",
-  RemoveBookmark = "Remove Bookmark",
-  Download = "Download",
-  RemoveWatchHistoryItem = "Remove from Continue Watching",
 }
 
 function checkReleased(media: ItemData): boolean {
@@ -41,83 +34,6 @@ function checkReleased(media: ItemData): boolean {
 
   return isReleased;
 }
-interface Action {
-  title: string;
-  onPress: () => void;
-}
-
-interface SheetContextMenuProps {
-  isOpen: boolean;
-  actions: Action[];
-  onClose: () => void;
-}
-
-const SheetContextMenu: React.FC<SheetContextMenuProps> = ({
-  isOpen,
-  actions,
-  onClose,
-}) => {
-  const theme = useTheme();
-
-  const iconMap: Record<string, any> = {
-    [ContextMenuActions.Bookmark]: "bookmark-outline",
-    [ContextMenuActions.RemoveBookmark]: "bookmark-off-outline",
-    [ContextMenuActions.Download]: "download-outline",
-    [ContextMenuActions.RemoveWatchHistoryItem]: "clock-remove-outline",
-  };
-
-  return (
-    <Sheet
-      modal
-      open={isOpen}
-      onOpenChange={onClose}
-      snapPoints={[35]}
-      dismissOnSnapToBottom
-      dismissOnOverlayPress
-      animationConfig={{
-        type: "spring",
-        damping: 20,
-        mass: 1.2,
-        stiffness: 250,
-      }}
-    >
-      <Sheet.Handle backgroundColor="$sheetHandle" />
-      <Sheet.Frame
-        backgroundColor="$sheetBackground"
-        padding="$4"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Settings.Content>
-          {actions.map((action, index) => (
-            <Settings.Item
-              key={index}
-              title={action.title}
-              iconRight={
-                <MaterialCommunityIcons
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                  name={iconMap[action.title]}
-                  size={24}
-                  color={theme.sheetItemSelected.val}
-                />
-              }
-              onPress={() => {
-                action.onPress();
-                onClose();
-              }}
-            />
-          ))}
-        </Settings.Content>
-      </Sheet.Frame>
-      <Sheet.Overlay
-        animation="lazy"
-        backgroundColor="rgba(0, 0, 0, 0.8)"
-        enterStyle={{ opacity: 0 }}
-        exitStyle={{ opacity: 0 }}
-      />
-    </Sheet>
-  );
-};
 
 export default function Item({ data }: { data: ItemData }) {
   const resetVideo = usePlayerStore((state) => state.resetVideo);
