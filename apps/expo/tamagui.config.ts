@@ -1,4 +1,3 @@
-import type { MotiTransition } from "moti";
 import { createAnimations } from "@tamagui/animations-moti";
 import { config } from "@tamagui/config/v3";
 import { createFont, createTamagui } from "tamagui";
@@ -10,19 +9,6 @@ import {
   redTokens,
   tealTokens,
 } from "@movie-web/colors";
-
-const test: MotiTransition = {
-  type: "spring" as const,
-  delay: 0,
-  duration: 0,
-  damping: 0,
-  mass: 0,
-  stiffness: 0,
-  overshootClamping: false,
-  restDisplacementThreshold: 0,
-  restSpeedThreshold: 0,
-  velocity: 0,
-};
 
 type Tokens =
   | typeof mainTokens
@@ -223,29 +209,27 @@ export const tamaguiConfig = createTamagui({
   animations: createAnimations({
     fast: {
       type: "decay",
+      deceleration: 0.999,
+    },
+    bounce: {
+      type: "spring",
+      stiffness: 200,
+      damping: 10,
+    },
+    quicker: {
+      type: "spring",
+      stiffness: 300,
       damping: 20,
-      mass: 1.2,
-      stiffness: 250,
-    } as unknown as MotiTransition,
-    // bounce: {
-    //   type: "spring",
-    //   stiffness: 200,
-    //   damping: 10,
-    // },
-    // quicker: {
-    //   type: "spring",
-    //   stiffness: 300,
-    //   damping: 20,
-    // },
-    // static: {
-    //   type: "decay",
-    //   deceleration: 0.999,
-    // },
-    // lazy: {
-    //   type: "spring",
-    //   stiffness: 100,
-    //   damping: 20,
-    // },
+    },
+    static: {
+      type: "decay",
+      deceleration: 0.999,
+    },
+    lazy: {
+      type: "spring",
+      stiffness: 100,
+      damping: 20,
+    },
   }),
   fonts: {
     heading: headingFont,
