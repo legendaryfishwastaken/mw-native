@@ -18,10 +18,10 @@ import { ProgressBar } from "./ProgressBar";
 import { SeasonSelector } from "./SeasonEpisodeSelector";
 import { SettingsSelector } from "./SettingsSelector";
 import { SourceSelector } from "./SourceSelector";
-import { mapMillisecondsToTime } from "./utils";
+import { mapSecondsToTime } from "./utils";
 
 export const BottomControls = () => {
-  const status = usePlayerStore((state) => state.status);
+  const player = usePlayerStore((state) => state.player);
   const isIdle = usePlayerStore((state) => state.interface.isIdle);
   const setIsIdle = usePlayerStore((state) => state.setIsIdle);
   const isLocalFile = usePlayerStore((state) => state.isLocalFile);
@@ -33,25 +33,23 @@ export const BottomControls = () => {
   }, [showRemaining, setIsIdle]);
 
   const { currentTime, remainingTime } = useMemo(() => {
-    if (status?.isLoaded) {
-      const current = mapMillisecondsToTime(status.positionMillis ?? 0);
-      const remaining = `-${mapMillisecondsToTime(
-        (status.durationMillis ?? 0) - (status.positionMillis ?? 0),
+    if (player) {
+      const current = mapSecondsToTime(player.currentTime);
+      const remaining = `-${mapSecondsToTime(
+        (player.duration ?? 0) - (player.currentTime ?? 0),
       )}`;
       return { currentTime: current, remainingTime: remaining };
     } else {
       return {
-        currentTime: mapMillisecondsToTime(0),
-        remainingTime: mapMillisecondsToTime(0),
+        currentTime: mapSecondsToTime(0),
+        remainingTime: mapSecondsToTime(0),
       };
     }
-  }, [status]);
+  }, [player]);
 
   const durationTime = useMemo(() => {
-    return mapMillisecondsToTime(
-      status?.isLoaded ? status.durationMillis ?? 0 : 0,
-    );
-  }, [status]);
+    return mapSecondsToTime(player?.duration ?? 0);
+  }, [player]);
 
   const translateY = useSharedValue(128);
 

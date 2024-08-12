@@ -43,6 +43,7 @@ const defineConfig = (): ExpoConfig => ({
   },
   plugins: [
     "expo-router",
+    "expo-video",
     [withRemoveiOSNotificationEntitlement as unknown as string],
     [
       "expo-screen-orientation",

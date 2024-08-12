@@ -120,7 +120,7 @@ export default function Item({ data }: { data: ItemData }) {
       onLongPress={handleLongPress}
       style={{ width: "100%" }}
     >
-      <View width="100%">
+      <View width="100%" justifyContent="center" alignItems="center">
         <View
           marginBottom={4}
           aspectRatio={9 / 14}
@@ -131,10 +131,10 @@ export default function Item({ data }: { data: ItemData }) {
         >
           <Image source={{ uri: posterUrl }} width="100%" height="100%" />
         </View>
-        <Text fontWeight="bold" fontSize={14}>
+        <Text fontWeight="bold" fontSize={14} numberOfLines={1}>
           {title}
         </Text>
-        <View flexDirection="row" alignItems="center" gap={3}>
+        <View flexDirection="row" alignItems="center" gap="$2">
           <Text fontSize={12} color="$ash100">
             {type === "tv" ? "Show" : "Movie"}
           </Text>

@@ -4,38 +4,31 @@ import { Spinner } from "tamagui";
 import { usePlayerStore } from "~/stores/player/store";
 
 export const PlayButton = () => {
-  const videoRef = usePlayerStore((state) => state.videoRef);
-  const status = usePlayerStore((state) => state.status);
+  const player = usePlayerStore((state) => state.player);
   const playAudio = usePlayerStore((state) => state.playAudio);
   const pauseAudio = usePlayerStore((state) => state.pauseAudio);
 
-  if (
-    status?.isLoaded &&
-    !status.isPlaying &&
-    status.isBuffering &&
-    status.positionMillis > status.playableDurationMillis!
-  ) {
+  if (!player) return null;
+
+  if (player.status === "loading") {
     return <Spinner size="large" color="white" />;
   }
 
   return (
     <FontAwesome
-      name={status?.isLoaded && status.isPlaying ? "pause" : "play"}
+      name={player.playing ? "pause" : "play"}
       size={36}
       color="white"
       onPress={() => {
-        if (status?.isLoaded) {
-          if (status.isPlaying) {
-            videoRef?.pauseAsync().catch(() => {
-              console.log("Error pausing video");
-            });
-            void pauseAudio();
-          } else {
-            videoRef?.playAsync().catch(() => {
-              console.log("Error playing video");
-            });
-            void playAudio();
-          }
+        if (player.playing) {
+          void pauseAudio();
+        } else {
+          void playAudio();
+        }
+
+        if (!player.playing) {
+          player.play();
+          void playAudio();
         }
       }}
     />
