@@ -4,12 +4,18 @@ description: "Common setup steps for Actions"
 runs:
   using: composite
   steps:
-    - uses: oven-sh/setup-bun@v1
+    - uses: pnpm/action-setup@v3
+      name: Install pnpm
       with:
-        bun-version: latest
+        version: 9
+        run_install: false
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 21
+        cache: "pnpm"
 
     - shell: bash
-      run: bun add -g turbo
+      run: pnpm add -g turbo
 
     - shell: bash
-      run: bun install
+      run: pnpm install

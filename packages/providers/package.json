@@ -34,7 +34,7 @@
     "lint": "eslint --ext .ts,.js src/",
     "lint:fix": "eslint --fix --ext .ts,.js src/",
     "lint:report": "eslint --ext .ts,.js --output-file eslint_report.json --format json src/",
-    "prepare": "bun run build"
+    "prepare": "pnpm run build"
   },
   "devDependencies": {
     "@movie-web/eslint-config": "workspace:^0.2.0",
@@ -64,7 +64,7 @@
     "vitest": "^1.4.0"
   },
   "dependencies": {
-    "cheerio": "^1.0.0-rc.12",
+    "cheerio": "1.0.0-rc.12",
     "cookie": "^0.6.0",
     "crypto-js": "^4.2.0",
     "form-data": "^4.0.0",
