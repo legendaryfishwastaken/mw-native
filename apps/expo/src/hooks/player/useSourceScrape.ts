@@ -66,9 +66,9 @@ export const useBaseScrape = () => {
   const startEvent = useCallback((id: ScraperEvent<"start">) => {
     const lastIdTmp = lastId.current;
     setSources((s) => {
-      if (s[id]) s[id]!.status = "pending";
-      if (lastIdTmp && s[lastIdTmp] && s[lastIdTmp]!.status === "pending")
-        s[lastIdTmp]!.status = "success";
+      if (s[id]) s[id].status = "pending";
+      if (lastIdTmp && s[lastIdTmp] && s[lastIdTmp].status === "pending")
+        s[lastIdTmp].status = "success";
       return { ...s };
     });
     setCurrentSource(id);

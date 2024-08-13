@@ -74,6 +74,12 @@ export const VideoPlayer = () => {
   const setMeta = usePlayerStore((state) => state.setMeta);
   const isLocalFile = usePlayerStore((state) => state.isLocalFile);
 
+  const { gestureControls, autoPlay } = usePlayerSettingsStore();
+  const { updateWatchHistory, removeFromWatchHistory, getWatchHistoryItem } =
+    useWatchHistoryStore();
+  const { wifiDefaultQuality, mobileDataDefaultQuality } =
+    useNetworkSettingsStore();
+
   const player = useVideoPlayer(videoSrc, (player) => {
     if (state === "playing") {
       player.play();
@@ -94,12 +100,6 @@ export const VideoPlayer = () => {
       setVideoPlayer(player);
     }
   }, [player, setVideoPlayer]);
-
-  const { gestureControls, autoPlay } = usePlayerSettingsStore();
-  const { updateWatchHistory, removeFromWatchHistory, getWatchHistoryItem } =
-    useWatchHistoryStore();
-  const { wifiDefaultQuality, mobileDataDefaultQuality } =
-    useNetworkSettingsStore();
 
   const updateResizeMode = (newMode: ResizeMode) => {
     setResizeMode(newMode);
