@@ -45,11 +45,12 @@ export const BottomControls = () => {
         remainingTime: mapSecondsToTime(0),
       };
     }
-  }, [player]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [player?.currentTime]);
 
   const durationTime = useMemo(() => {
     return mapSecondsToTime(player?.duration ?? 0);
-  }, [player]);
+  }, [player?.duration]);
 
   const translateY = useSharedValue(128);
 

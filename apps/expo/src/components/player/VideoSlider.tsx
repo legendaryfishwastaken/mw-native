@@ -40,10 +40,12 @@ const VideoSlider = ({ onSlidingComplete }: VideoSliderProps) => {
   const knobSize_ = 20;
   const trackSize_ = 8;
   const minimumValue = 0;
-  const maximumValue = player?.duration ?? 0;
-  const value = (player?.currentTime ?? 0) * 1000 ?? 0;
+  const maximumValue = player?.duration ?? 0 * 1000;
+  const value = player?.currentTime ?? 0 * 1000;
   // TODO: Buffers are not yet implemented in expo-video
   const bufferValue = 0;
+
+  console.log("VideoSlider duration", player?.currentTime, player?.duration);
 
   const valueToX = (v: number) => {
     if (maximumValue === minimumValue) return 0;

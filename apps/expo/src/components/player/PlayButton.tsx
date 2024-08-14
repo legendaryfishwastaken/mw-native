@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { Spinner } from "tamagui";
 
@@ -8,6 +9,8 @@ export const PlayButton = () => {
   const playAudio = usePlayerStore((state) => state.playAudio);
   const pauseAudio = usePlayerStore((state) => state.pauseAudio);
 
+  const [isPlaying, setIsPlaying] = useState(player?.playing ?? false);
+
   if (!player) return null;
 
   if (player.status === "loading") {
@@ -16,19 +19,18 @@ export const PlayButton = () => {
 
   return (
     <FontAwesome
-      name={player.playing ? "pause" : "play"}
+      name={isPlaying ? "pause" : "play"}
       size={36}
       color="white"
       onPress={() => {
         if (player.playing) {
+          player.pause();
           void pauseAudio();
+          setIsPlaying(false);
         } else {
-          void playAudio();
-        }
-
-        if (!player.playing) {
           player.play();
           void playAudio();
+          setIsPlaying(true);
         }
       }}
     />

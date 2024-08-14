@@ -84,11 +84,9 @@ export const VideoPlayer = () => {
     if (state === "playing") {
       player.play();
     }
-
     if (meta) {
       const media = convertMetaToScrapeMedia(meta);
       const watchHistoryItem = getWatchHistoryItem(media);
-
       if (watchHistoryItem) {
         player.currentTime = watchHistoryItem.positionMillis / 1000;
       }
@@ -158,7 +156,6 @@ export const VideoPlayer = () => {
       } else {
         runOnJS(setShowBrightnessOverlay)(false);
       }
-      player.volume = volume.value;
     });
 
   const composedGesture = Gesture.Race(
@@ -173,6 +170,7 @@ export const VideoPlayer = () => {
     void NavigationBar.setVisibilityAsync("hidden");
   }
 
+  // TODO: Rerender with player.currentTime on this function call throws an error in expo-video
   useEffect(() => {
     const initializePlayer = async () => {
       if (isLocalFile) return;
@@ -219,25 +217,15 @@ export const VideoPlayer = () => {
 
     void initializePlayer();
 
-    const timeout = setTimeout(() => {
-      if (player.status === "loading") {
-        void dismissFullscreenPlayer();
-        void router.back();
-      }
-    }, 60000);
-
     return () => {
       if (meta) {
-        const item = convertMetaToItemData(meta);
-        const scrapeMedia = convertMetaToScrapeMedia(meta);
-        updateWatchHistory(item, scrapeMedia, player.currentTime);
+        // const item = convertMetaToItemData(meta);
+        // const scrapeMedia = convertMetaToScrapeMedia(meta);
+        // updateWatchHistory(item, scrapeMedia, player.currentTime);
       }
-      clearTimeout(timeout);
       void synchronizePlayback();
     };
   }, [
-    player.currentTime,
-    player.status,
     isLocalFile,
     dismissFullscreenPlayer,
     meta,
@@ -280,7 +268,7 @@ export const VideoPlayer = () => {
     };
   }, [player, meta, removeFromWatchHistory, autoPlay, setMeta, router]);
 
-  console.log("loading player", player);
+  console.log("VideoPlayer duration", player.currentTime, player.duration);
 
   return (
     <GestureDetector gesture={composedGesture}>
@@ -305,6 +293,7 @@ export const VideoPlayer = () => {
               }),
             },
           ]}
+          nativeControls={false}
           onTouchStart={() => setIsIdle(!isIdle)}
         />
         <View
