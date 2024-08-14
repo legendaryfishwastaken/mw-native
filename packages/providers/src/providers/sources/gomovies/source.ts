@@ -1,6 +1,6 @@
 import { load } from 'cheerio';
 
-import type { ScrapeContext } from '@/utils/context';
+import { ScrapeContext } from '@/utils/context';
 
 import { gomoviesBase } from '.';
 

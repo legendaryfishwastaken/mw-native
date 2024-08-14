@@ -1,5 +1,5 @@
 import { makeStandardFetcher } from '@/fetchers/standardFetch';
-import type { DefaultedFetcherOptions } from '@/fetchers/types';
+import { DefaultedFetcherOptions } from '@/fetchers/types';
 import { Headers } from 'node-fetch';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 

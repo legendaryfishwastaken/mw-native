@@ -1,13 +1,7 @@
 import { flags } from '@/entrypoint/utils/targets';
-import type { SourcererEmbed, SourcererOutput} from '@/providers/base';
-import { makeSourcerer } from '@/providers/base';
-import type { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
+import { SourcererOutput, makeSourcerer } from '@/providers/base';
+import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
-
-export const headers = {
-  Origin: 'https://extension.works.again.with.nsbx',
-  Referer: 'https://extension.works.again.with.nsbx',
-};
 
 async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promise<SourcererOutput> {
   const query = {
@@ -16,30 +10,31 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
     tmdbId: ctx.media.tmdbId,
     imdbId: ctx.media.imdbId,
     type: ctx.media.type,
-    season: '',
-    episode: '',
+    ...(ctx.media.type === 'show' && {
+      season: ctx.media.season.number.toString(),
+      episode: ctx.media.episode.number.toString(),
+    }),
   };
 
-  if (ctx.media.type === 'show') {
-    query.season = ctx.media.season.number.toString();
-    query.episode = ctx.media.episode.number.toString();
-  }
+  const res: { providers: string[]; endpoint: string } = await ctx.fetcher('https://api.nsbx.ru/status');
 
-  const result = await ctx.fetcher(`https://api.nsbx.ru/search?query=${encodeURIComponent(JSON.stringify(query))}`, {
-    headers,
-  });
+  if (res.providers?.length === 0) throw new NotFoundError('No providers available');
+  if (!res.endpoint) throw new Error('No endpoint returned');
 
-  if (result.embeds.length === 0) throw new NotFoundError('No watchable item found');
+  const embeds = res.providers.map((provider: string) => ({
+      embedId: provider,
+      url: `${JSON.stringify(query)}|${res.endpoint}`,
+    }));
 
   return {
-    embeds: result.embeds as SourcererEmbed[],
+    embeds,
   };
 }
 
 export const nsbxScraper = makeSourcerer({
   id: 'nsbx',
   name: 'NSBX',
-  rank: 150,
+  rank: 129,
   flags: [flags.CORS_ALLOWED],
   disabled: false,
   scrapeMovie: comboScraper,

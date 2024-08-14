@@ -1,8 +1,7 @@
 import { load } from 'cheerio';
 
 import { flags } from '@/entrypoint/utils/targets';
-import type { SourcererEmbed} from '@/providers/base';
-import { makeSourcerer } from '@/providers/base';
+import { SourcererEmbed, makeSourcerer } from '@/providers/base';
 import { compareMedia } from '@/utils/compare';
 import { NotFoundError } from '@/utils/errors';
 

@@ -1,6 +1,6 @@
 import { sendRequest } from '@/providers/sources/showbox/sendRequest';
-import type { StreamFile } from '@/providers/streams';
-import type { ScrapeContext } from '@/utils/context';
+import { StreamFile } from '@/providers/streams';
+import { ScrapeContext } from '@/utils/context';
 
 const allowedQualities = ['360', '480', '720', '1080', '4k'];
 

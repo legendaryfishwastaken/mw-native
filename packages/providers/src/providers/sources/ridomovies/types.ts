@@ -65,14 +65,14 @@ export interface SearchResultItem {
   contentable: Contentable;
 }
 
-export interface SearchResult {
+export type SearchResult = {
   data: {
     items: SearchResultItem[];
   };
-}
+};
 
-export interface IframeSourceResult {
+export type IframeSourceResult = {
   data: {
     url: string;
   }[];
-}
+};

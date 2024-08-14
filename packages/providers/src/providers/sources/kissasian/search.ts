@@ -1,7 +1,7 @@
 import { load } from 'cheerio';
 import FormData from 'form-data';
 
-import type { ScrapeContext } from '@/utils/context';
+import { ScrapeContext } from '@/utils/context';
 
 import { kissasianBase } from './common';
 

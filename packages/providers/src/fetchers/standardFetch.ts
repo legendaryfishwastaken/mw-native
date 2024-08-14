@@ -1,16 +1,17 @@
 import { serializeBody } from '@/fetchers/body';
 import { makeFullUrl } from '@/fetchers/common';
-import type { FetchLike, FetchReply } from '@/fetchers/fetch';
-import type { Fetcher } from '@/fetchers/types';
+import { FetchLike, FetchReply } from '@/fetchers/fetch';
+import { Fetcher } from '@/fetchers/types';
 
 function getHeaders(list: string[], res: FetchReply): Headers {
   const output = new Headers();
   list.forEach((header) => {
     const realHeader = header.toLowerCase();
-    const value = res.headers.get(realHeader);
+    const realValue = res.headers.get(realHeader);
     const extraValue = res.extraHeaders?.get(realHeader);
+    const value = extraValue ?? realValue;
     if (!value) return;
-    output.set(realHeader, extraValue ?? value);
+    output.set(realHeader, value);
   });
   return output;
 }
@@ -27,6 +28,7 @@ export function makeStandardFetcher(f: FetchLike): Fetcher {
         ...ops.headers,
       },
       body: seralizedBody.body,
+      credentials: ops.credentials,
     });
 
     let body: any;

@@ -1,6 +1,5 @@
-import type { SourcererOutput} from '@/providers/base';
-import { makeSourcerer } from '@/providers/base';
-import type { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
+import { SourcererOutput, makeSourcerer } from '@/providers/base';
+import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
 
 import { scrapeIds, searchAndFindMedia } from './util';

@@ -1,10 +1,9 @@
-import type { ScrapeMedia } from '@/entrypoint/utils/media';
-import type { Sourcerer} from '@/providers/base';
-import { Embed, SourcererEmbed } from '@/providers/base';
+import { ScrapeMedia } from '@/entrypoint/utils/media';
+import { Embed, Sourcerer, SourcererEmbed } from '@/providers/base';
 import { buildProviders } from '@/entrypoint/builder';
 import { describe, expect, it } from 'vitest';
 import { makeStandardFetcher } from '@/fetchers/standardFetch';
-import type { ProviderControls } from '@/entrypoint/controls';
+import { ProviderControls } from '@/entrypoint/controls';
 import { NotFoundError } from '@/utils/errors';
 import { targets } from '@/entrypoint/utils/targets';
 import { getBuiltinEmbeds } from '@/entrypoint/providers';
@@ -42,7 +41,7 @@ export function testSource(ops: TestSourceOptions) {
           let hasError = false;
           let streamCount = 0;
           let embedCount = 0;
-          const embeds = [];
+          let embeds = [];
           try {
             const result = await providers.runSourceScraper({
               id: ops.source.id,

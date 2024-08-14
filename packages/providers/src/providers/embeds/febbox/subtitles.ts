@@ -1,13 +1,12 @@
-import type {
-  Caption} from '@/providers/captions';
 import {
+  Caption,
   getCaptionTypeFromUrl,
   isValidLanguageCode,
   removeDuplicatedLanguages as removeDuplicateLanguages,
 } from '@/providers/captions';
 import { captionsDomains } from '@/providers/sources/showbox/common';
 import { sendRequest } from '@/providers/sources/showbox/sendRequest';
-import type { ScrapeContext } from '@/utils/context';
+import { ScrapeContext } from '@/utils/context';
 
 interface CaptionApiResponse {
   data: {

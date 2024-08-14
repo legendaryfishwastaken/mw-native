@@ -1,9 +1,9 @@
 import { load } from 'cheerio';
 
-import type { MovieMedia, ShowMedia } from '@/entrypoint/utils/media';
+import { MovieMedia, ShowMedia } from '@/entrypoint/utils/media';
 import { flixHqBase } from '@/providers/sources/flixhq/common';
 import { compareMedia, compareTitle } from '@/utils/compare';
-import type { ScrapeContext } from '@/utils/context';
+import { ScrapeContext } from '@/utils/context';
 
 export async function getFlixhqId(ctx: ScrapeContext, media: MovieMedia | ShowMedia): Promise<string | null> {
   const searchResults = await ctx.proxiedFetcher<string>(`/search/${media.title.replaceAll(/[^a-z0-9A-Z]/g, '-')}`, {

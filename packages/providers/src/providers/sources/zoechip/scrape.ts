@@ -1,9 +1,8 @@
 import { load } from 'cheerio';
 
-import type { ShowMedia } from '@/entrypoint/utils/media';
-import type { ZoeChipSourceDetails} from '@/providers/sources/zoechip/common';
-import { zoeBase } from '@/providers/sources/zoechip/common';
-import type { MovieScrapeContext, ScrapeContext, ShowScrapeContext } from '@/utils/context';
+import { ShowMedia } from '@/entrypoint/utils/media';
+import { ZoeChipSourceDetails, zoeBase } from '@/providers/sources/zoechip/common';
+import { MovieScrapeContext, ScrapeContext, ShowScrapeContext } from '@/utils/context';
 
 export async function getZoeChipSources(ctx: MovieScrapeContext | ShowScrapeContext, id: string) {
   // Movies use /ajax/episode/list/ID

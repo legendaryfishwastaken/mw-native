@@ -1,9 +1,9 @@
 import { load } from 'cheerio';
 
-import type { MovieMedia, ShowMedia } from '@/entrypoint/utils/media';
+import { MovieMedia, ShowMedia } from '@/entrypoint/utils/media';
 import { zoeBase } from '@/providers/sources/zoechip/common';
 import { compareMedia } from '@/utils/compare';
-import type { ScrapeContext } from '@/utils/context';
+import { ScrapeContext } from '@/utils/context';
 
 export async function getZoeChipSearchResults(ctx: ScrapeContext, media: MovieMedia | ShowMedia) {
   const titleCleaned = media.title.toLocaleLowerCase().replace(/ /g, '-');

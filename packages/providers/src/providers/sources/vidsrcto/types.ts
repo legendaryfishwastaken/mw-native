@@ -1,7 +1,7 @@
-export interface VidSrcToResponse<T> {
+export type VidSrcToResponse<T> = {
   status: number;
   result: T;
-}
+};
 
 export type SourcesResult = VidSrcToResponse<
   {

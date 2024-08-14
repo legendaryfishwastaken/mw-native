@@ -1,13 +1,12 @@
 import { flags } from '@/entrypoint/utils/targets';
 import { makeEmbed } from '@/providers/base';
-import type { Caption} from '@/providers/captions';
-import { getCaptionTypeFromUrl, labelToLanguageCode } from '@/providers/captions';
+import { Caption, getCaptionTypeFromUrl, labelToLanguageCode } from '@/providers/captions';
 import { NotFoundError } from '@/utils/errors';
 
-interface FPlayerResponse {
+type FPlayerResponse = {
   sourceUrls: string[];
   subtitles: string | null;
-}
+};
 
 // if you don't understand how this is reversed
 // check https://discord.com/channels/871713465100816424/1186646348137775164/1225644477188935770

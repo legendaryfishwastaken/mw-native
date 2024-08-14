@@ -1,13 +1,11 @@
-import type { ProviderControls} from '@/entrypoint/controls';
-import { makeControls } from '@/entrypoint/controls';
+import { ProviderControls, makeControls } from '@/entrypoint/controls';
 import { getBuiltinEmbeds, getBuiltinSources } from '@/entrypoint/providers';
-import type { Targets} from '@/entrypoint/utils/targets';
-import { getTargetFeatures } from '@/entrypoint/utils/targets';
-import type { Fetcher } from '@/fetchers/types';
-import type { Embed, Sourcerer } from '@/providers/base';
+import { Targets, getTargetFeatures } from '@/entrypoint/utils/targets';
+import { Fetcher } from '@/fetchers/types';
+import { Embed, Sourcerer } from '@/providers/base';
 import { getProviders } from '@/providers/get';
 
-export interface ProviderBuilder {
+export type ProviderBuilder = {
   setTarget(target: Targets): ProviderBuilder;
   setFetcher(fetcher: Fetcher): ProviderBuilder;
   setProxiedFetcher(fetcher: Fetcher): ProviderBuilder;
@@ -18,7 +16,7 @@ export interface ProviderBuilder {
   addBuiltinProviders(): ProviderBuilder;
   enableConsistentIpForRequests(): ProviderBuilder;
   build(): ProviderControls;
-}
+};
 
 export function buildProviders(): ProviderBuilder {
   let consistentIpForRequests = false;

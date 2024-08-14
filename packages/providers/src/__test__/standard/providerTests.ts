@@ -1,7 +1,7 @@
- 
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { vi } from 'vitest';
 
-import type { gatherAllEmbeds, gatherAllSources } from '@/providers/all';
+import { gatherAllEmbeds, gatherAllSources } from '@/providers/all';
 import { makeEmbed, makeSourcerer } from '@/providers/base';
 
 export function makeProviderMocks() {

@@ -1,4 +1,4 @@
-import type { ScrapeMedia } from '@/entrypoint/utils/media';
+import { ScrapeMedia } from '@/entrypoint/utils/media';
 
 function makeMedia(media: ScrapeMedia): ScrapeMedia {
   return media;

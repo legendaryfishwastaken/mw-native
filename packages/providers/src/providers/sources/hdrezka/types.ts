@@ -1,6 +1,6 @@
-import type { ScrapeMedia } from "@/entrypoint/utils/media";
+import { ScrapeMedia } from '@/index';
 
-export interface VideoLinks {
+export type VideoLinks = {
   success: boolean;
   message: string;
   premium_content: number;
@@ -10,7 +10,7 @@ export interface VideoLinks {
   subtitle_lns: boolean;
   subtitle_def: boolean;
   thumbnails: string;
-}
+};
 
 export interface MovieData {
   id: string | null;

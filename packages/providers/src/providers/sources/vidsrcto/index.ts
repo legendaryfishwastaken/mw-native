@@ -1,11 +1,11 @@
 import { load } from 'cheerio';
 
-import type { SourcererEmbed, SourcererOutput} from '@/providers/base';
-import { makeSourcerer } from '@/providers/base';
-import type { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
+import { flags } from '@/entrypoint/utils/targets';
+import { SourcererEmbed, SourcererOutput, makeSourcerer } from '@/providers/base';
+import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 
 import { decryptSourceUrl } from './common';
-import type { SourceResult, SourcesResult } from './types';
+import { SourceResult, SourcesResult } from './types';
 
 const vidSrcToBase = 'https://vidsrc.to';
 const referer = `${vidSrcToBase}/`;
@@ -82,8 +82,9 @@ const universalScraper = async (ctx: ShowScrapeContext | MovieScrapeContext): Pr
 export const vidSrcToScraper = makeSourcerer({
   id: 'vidsrcto',
   name: 'VidSrcTo',
+  disabled: true,
   scrapeMovie: universalScraper,
   scrapeShow: universalScraper,
-  flags: [],
+  flags: [flags.PROXY_BLOCKED],
   rank: 130,
 });

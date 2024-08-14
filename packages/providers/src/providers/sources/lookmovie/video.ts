@@ -1,9 +1,8 @@
-import type { MovieMedia, ShowMedia } from '@/entrypoint/utils/media';
-import type { Caption} from '@/providers/captions';
-import { labelToLanguageCode, removeDuplicatedLanguages } from '@/providers/captions';
-import type { ScrapeContext } from '@/utils/context';
+import { MovieMedia, ShowMedia } from '@/entrypoint/utils/media';
+import { Caption, labelToLanguageCode, removeDuplicatedLanguages } from '@/providers/captions';
+import { ScrapeContext } from '@/utils/context';
 
-import type { StreamsDataResult } from './type';
+import { StreamsDataResult } from './type';
 import { baseUrl } from './util';
 
 export async function getVideoSources(

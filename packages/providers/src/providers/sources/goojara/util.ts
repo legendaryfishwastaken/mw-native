@@ -1,13 +1,12 @@
 import { load } from 'cheerio';
 
-import type { MovieMedia, ShowMedia } from '@/entrypoint/utils/media';
+import { MovieMedia, ShowMedia } from '@/entrypoint/utils/media';
 import { compareMedia } from '@/utils/compare';
-import type { ScrapeContext } from '@/utils/context';
+import { ScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
 
 import { getEmbeds } from './getEmbeds';
-import type { EmbedsResult, Result} from './type';
-import { baseUrl } from './type';
+import { EmbedsResult, Result, baseUrl } from './type';
 
 let data;
 
@@ -81,7 +80,7 @@ export async function scrapeIds(
       if (parseInt(episodeNumber, 10) === media.episode.number) {
         const href = $2(element).find('.snfo h1 a').attr('href');
         const idMatch = href?.match(/\/([a-zA-Z0-9]+)$/);
-        if (idMatch?.[1]) {
+        if (idMatch && idMatch[1]) {
           episodeId = idMatch[1];
           return false; // Break out of the loop once the episode is found
         }

@@ -1,10 +1,11 @@
 import { load } from 'cheerio';
 import { unpack } from 'unpacker';
 
-import type { SubtitleResult } from './types';
+import { flags } from '@/entrypoint/utils/targets';
+
+import { SubtitleResult } from './types';
 import { makeEmbed } from '../../base';
-import type { Caption} from '../../captions';
-import { getCaptionTypeFromUrl, labelToLanguageCode } from '../../captions';
+import { Caption, getCaptionTypeFromUrl, labelToLanguageCode } from '../../captions';
 
 const evalCodeRegex = /eval\((.*)\)/g;
 const fileRegex = /file:"(.*?)"/g;
@@ -52,7 +53,7 @@ export const fileMoonScraper = makeEmbed({
           id: 'primary',
           type: 'hls',
           playlist: file[1],
-          flags: [],
+          flags: [flags.IP_LOCKED],
           captions,
         },
       ],

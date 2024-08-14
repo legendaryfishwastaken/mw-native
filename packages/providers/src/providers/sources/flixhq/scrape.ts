@@ -1,8 +1,8 @@
 import { load } from 'cheerio';
 
-import type { MovieMedia, ShowMedia } from '@/entrypoint/utils/media';
+import { MovieMedia, ShowMedia } from '@/entrypoint/utils/media';
 import { flixHqBase } from '@/providers/sources/flixhq/common';
-import type { ScrapeContext } from '@/utils/context';
+import { ScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
 
 export async function getFlixhqSourceDetails(ctx: ScrapeContext, sourceId: string): Promise<string> {

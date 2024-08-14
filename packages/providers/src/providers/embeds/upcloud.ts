@@ -2,8 +2,7 @@ import crypto from 'crypto-js';
 
 import { flags } from '@/entrypoint/utils/targets';
 import { makeEmbed } from '@/providers/base';
-import type { Caption} from '@/providers/captions';
-import { getCaptionTypeFromUrl, labelToLanguageCode } from '@/providers/captions';
+import { Caption, getCaptionTypeFromUrl, labelToLanguageCode } from '@/providers/captions';
 
 const origin = 'https://rabbitstream.net';
 const referer = 'https://rabbitstream.net/';

@@ -7,7 +7,9 @@ interface Data {
   warezcdnStatus: string;
 }
 
-type List = Record<string, Data>;
+type List = {
+  [key: string]: Data;
+};
 
 export interface SerieAjaxResponse {
   list: List;

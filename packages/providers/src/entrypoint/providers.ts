@@ -1,5 +1,5 @@
 import { gatherAllEmbeds, gatherAllSources } from '@/providers/all';
-import type { Embed, Sourcerer } from '@/providers/base';
+import { Embed, Sourcerer } from '@/providers/base';
 
 export function getBuiltinSources(): Sourcerer[] {
   return gatherAllSources().filter((v) => !v.disabled);

@@ -1,4 +1,4 @@
-export interface VidplaySourceResponse {
+export type VidplaySourceResponse = {
   result:
     | {
         sources: {
@@ -10,7 +10,7 @@ export interface VidplaySourceResponse {
         }[];
       }
     | number;
-}
+};
 
 export type SubtitleResult = {
   file: string;
@@ -18,7 +18,7 @@ export type SubtitleResult = {
   kind: string;
 }[];
 
-export interface ThumbnailTrack {
+export type ThumbnailTrack = {
   type: 'vtt';
   url: string;
-}
+};

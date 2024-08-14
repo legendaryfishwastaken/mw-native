@@ -1,14 +1,13 @@
 import { load } from 'cheerio';
 
 import { flags } from '@/entrypoint/utils/targets';
-import type { SourcererEmbed} from '@/providers/base';
-import { makeSourcerer } from '@/providers/base';
+import { SourcererEmbed, makeSourcerer } from '@/providers/base';
 import { closeLoadScraper } from '@/providers/embeds/closeload';
 import { ridooScraper } from '@/providers/embeds/ridoo';
-import type { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
+import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
 
-import type { IframeSourceResult, SearchResult } from './types';
+import { IframeSourceResult, SearchResult } from './types';
 
 const ridoMoviesBase = `https://ridomovies.tv`;
 const ridoMoviesApiBase = `${ridoMoviesBase}/core/api`;

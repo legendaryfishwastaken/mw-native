@@ -1,5 +1,5 @@
 import { getVidSrcMovieSources } from '@/providers/sources/vidsrc/scrape';
-import type { MovieScrapeContext } from '@/utils/context';
+import { MovieScrapeContext } from '@/utils/context';
 
 export async function scrapeMovie(ctx: MovieScrapeContext) {
   return {

@@ -1,34 +1,35 @@
-import type { FullScraperEvents, UpdateEvent } from "@/entrypoint/utils/events";
-import type { ScrapeMedia } from "@/entrypoint/utils/media";
-import type { FeatureMap } from "@/entrypoint/utils/targets";
-import type { UseableFetcher } from "@/fetchers/types";
-import type { EmbedOutput, SourcererOutput } from "@/providers/base";
-import type { ProviderList } from "@/providers/get";
-import type { Stream } from "@/providers/streams";
-import type { ScrapeContext } from "@/utils/context";
-import { flagsAllowedInFeatures } from "@/entrypoint/utils/targets";
-import { NotFoundError } from "@/utils/errors";
-import { reorderOnIdList } from "@/utils/list";
-import { isValidStream, validatePlayableStream } from "@/utils/valid";
+import { FullScraperEvents, UpdateEvent } from '@/entrypoint/utils/events';
+import { ScrapeMedia } from '@/entrypoint/utils/media';
+import { FeatureMap, flagsAllowedInFeatures } from '@/entrypoint/utils/targets';
+import { UseableFetcher } from '@/fetchers/types';
+import { EmbedOutput, SourcererOutput } from '@/providers/base';
+import { ProviderList } from '@/providers/get';
+import { Stream } from '@/providers/streams';
+import { ScrapeContext } from '@/utils/context';
+import { NotFoundError } from '@/utils/errors';
+import { reorderOnIdList } from '@/utils/list';
+import { addOpenSubtitlesCaptions } from '@/utils/opensubtitles';
+import { requiresProxy, setupProxy } from '@/utils/proxy';
+import { isValidStream, validatePlayableStream } from '@/utils/valid';
 
-export interface RunOutput {
+export type RunOutput = {
   sourceId: string;
   embedId?: string;
   stream: Stream;
-}
+};
 
-export interface SourceRunOutput {
+export type SourceRunOutput = {
   sourceId: string;
   stream: Stream[];
   embeds: [];
-}
+};
 
-export interface EmbedRunOutput {
+export type EmbedRunOutput = {
   embedId: string;
   stream: Stream[];
-}
+};
 
-export interface ProviderRunnerOptions {
+export type ProviderRunnerOptions = {
   fetcher: UseableFetcher;
   proxiedFetcher: UseableFetcher;
   features: FeatureMap;
@@ -36,22 +37,19 @@ export interface ProviderRunnerOptions {
   embedOrder?: string[];
   events?: FullScraperEvents;
   media: ScrapeMedia;
-}
+  proxyStreams?: boolean; // temporary
+  disableOpensubtitles?: boolean;
+};
 
-export async function runAllProviders(
-  list: ProviderList,
-  ops: ProviderRunnerOptions,
-): Promise<RunOutput | null> {
-  const sources = reorderOnIdList(ops.sourceOrder ?? [], list.sources).filter(
-    (source) => {
-      if (ops.media.type === "movie") return !!source.scrapeMovie;
-      if (ops.media.type === "show") return !!source.scrapeShow;
-      return false;
-    },
-  );
+export async function runAllProviders(list: ProviderList, ops: ProviderRunnerOptions): Promise<RunOutput | null> {
+  const sources = reorderOnIdList(ops.sourceOrder ?? [], list.sources).filter((source) => {
+    if (ops.media.type === 'movie') return !!source.scrapeMovie;
+    if (ops.media.type === 'show') return !!source.scrapeShow;
+    return false;
+  });
   const embeds = reorderOnIdList(ops.embedOrder ?? [], list.embeds);
   const embedIds = embeds.map((embed) => embed.id);
-  let lastId = "";
+  let lastId = '';
 
   const contextBase: ScrapeContext = {
     fetcher: ops.fetcher,
@@ -60,7 +58,7 @@ export async function runAllProviders(
       ops.events?.update?.({
         id: lastId,
         percentage: val,
-        status: "pending",
+        status: 'pending',
       });
     },
   };
@@ -76,12 +74,12 @@ export async function runAllProviders(
     // run source scrapers
     let output: SourcererOutput | null = null;
     try {
-      if (ops.media.type === "movie" && source.scrapeMovie)
+      if (ops.media.type === 'movie' && source.scrapeMovie)
         output = await source.scrapeMovie({
           ...contextBase,
           media: ops.media,
         });
-      else if (ops.media.type === "show" && source.scrapeShow)
+      else if (ops.media.type === 'show' && source.scrapeShow)
         output = await source.scrapeShow({
           ...contextBase,
           media: ops.media,
@@ -89,18 +87,20 @@ export async function runAllProviders(
       if (output) {
         output.stream = (output.stream ?? [])
           .filter(isValidStream)
-          .filter((stream) =>
-            flagsAllowedInFeatures(ops.features, stream.flags),
-          );
+          .filter((stream) => flagsAllowedInFeatures(ops.features, stream.flags));
+
+        output.stream = output.stream.map((stream) =>
+          requiresProxy(stream) && ops.proxyStreams ? setupProxy(stream) : stream,
+        );
       }
       if (!output || (!output.stream?.length && !output.embeds.length)) {
-        throw new NotFoundError("No streams found");
+        throw new NotFoundError('No streams found');
       }
     } catch (error) {
       const updateParams: UpdateEvent = {
         id: source.id,
         percentage: 100,
-        status: error instanceof NotFoundError ? "notfound" : "failure",
+        status: error instanceof NotFoundError ? 'notfound' : 'failure',
         reason: error instanceof NotFoundError ? error.message : undefined,
         error: error instanceof NotFoundError ? undefined : error,
       };
@@ -108,16 +108,25 @@ export async function runAllProviders(
       ops.events?.update?.(updateParams);
       continue;
     }
-    if (!output) throw new Error("Invalid media type");
+    if (!output) throw new Error('Invalid media type');
 
     // return stream is there are any
     if (output.stream?.[0]) {
-      const playableStream = await validatePlayableStream(
-        output.stream[0],
-        ops,
-        source.id,
-      );
-      if (!playableStream) throw new NotFoundError("No streams found");
+      const playableStream = await validatePlayableStream(output.stream[0], ops, source.id);
+      if (!playableStream) throw new NotFoundError('No streams found');
+
+      // opensubtitles
+      if (!ops.disableOpensubtitles)
+        playableStream.captions = await addOpenSubtitlesCaptions(
+          playableStream.captions,
+          ops,
+          btoa(
+            `${ops.media.imdbId}${
+              ops.media.type === 'show' ? `.${ops.media.season.number}.${ops.media.episode.number}` : ''
+            }`,
+          ),
+        );
+
       return {
         sourceId: source.id,
         stream: playableStream,
@@ -130,14 +139,12 @@ export async function runAllProviders(
         const e = list.embeds.find((v) => v.id === embed.embedId);
         return e && !e.disabled;
       })
-      .sort(
-        (a, b) => embedIds.indexOf(a.embedId) - embedIds.indexOf(b.embedId),
-      );
+      .sort((a, b) => embedIds.indexOf(a.embedId) - embedIds.indexOf(b.embedId));
 
     if (sortedEmbeds.length > 0) {
       ops.events?.discoverEmbeds?.({
         embeds: sortedEmbeds.map((embed, i) => ({
-          id: [source.id, i].join("-"),
+          id: [source.id, i].join('-'),
           embedScraperId: embed.embedId,
         })),
         sourceId: source.id,
@@ -146,10 +153,10 @@ export async function runAllProviders(
 
     for (const [ind, embed] of sortedEmbeds.entries()) {
       const scraper = embeds.find((v) => v.id === embed.embedId);
-      if (!scraper) throw new Error("Invalid embed returned");
+      if (!scraper) throw new Error('Invalid embed returned');
 
       // run embed scraper
-      const id = [source.id, ind].join("-");
+      const id = [source.id, ind].join('-');
       ops.events?.start?.(id);
       lastId = id;
 
@@ -161,24 +168,33 @@ export async function runAllProviders(
         });
         embedOutput.stream = embedOutput.stream
           .filter(isValidStream)
-          .filter((stream) =>
-            flagsAllowedInFeatures(ops.features, stream.flags),
-          );
-        if (embedOutput.stream.length === 0) {
-          throw new NotFoundError("No streams found");
-        }
-        const playableStream = await validatePlayableStream(
-          embedOutput.stream[0]!,
-          ops,
-          embed.embedId,
+          .filter((stream) => flagsAllowedInFeatures(ops.features, stream.flags));
+        embedOutput.stream = embedOutput.stream.map((stream) =>
+          requiresProxy(stream) && ops.proxyStreams ? setupProxy(stream) : stream,
         );
-        if (!playableStream) throw new NotFoundError("No streams found");
+        if (embedOutput.stream.length === 0) {
+          throw new NotFoundError('No streams found');
+        }
+        const playableStream = await validatePlayableStream(embedOutput.stream[0], ops, embed.embedId);
+        if (!playableStream) throw new NotFoundError('No streams found');
+
+        // opensubtitles
+        if (!ops.disableOpensubtitles)
+          playableStream.captions = await addOpenSubtitlesCaptions(
+            playableStream.captions,
+            ops,
+            btoa(
+              `${ops.media.imdbId}${
+                ops.media.type === 'show' ? `.${ops.media.season.number}.${ops.media.episode.number}` : ''
+              }`,
+            ),
+          );
         embedOutput.stream = [playableStream];
       } catch (error) {
         const updateParams: UpdateEvent = {
-          id: source.id,
+          id,
           percentage: 100,
-          status: error instanceof NotFoundError ? "notfound" : "failure",
+          status: error instanceof NotFoundError ? 'notfound' : 'failure',
           reason: error instanceof NotFoundError ? error.message : undefined,
           error: error instanceof NotFoundError ? undefined : error,
         };
@@ -190,7 +206,7 @@ export async function runAllProviders(
       return {
         sourceId: source.id,
         embedId: scraper.id,
-        stream: embedOutput.stream[0]!,
+        stream: embedOutput.stream[0],
       };
     }
   }

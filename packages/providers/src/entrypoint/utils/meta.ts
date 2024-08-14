@@ -1,17 +1,17 @@
-import type { MediaTypes } from '@/entrypoint/utils/media';
-import type { Embed, Sourcerer } from '@/providers/base';
-import type { ProviderList } from '@/providers/get';
+import { MediaTypes } from '@/entrypoint/utils/media';
+import { Embed, Sourcerer } from '@/providers/base';
+import { ProviderList } from '@/providers/get';
 
-export interface MetaOutput {
+export type MetaOutput = {
   type: 'embed' | 'source';
   id: string;
   rank: number;
   name: string;
-  mediaTypes?: MediaTypes[];
-}
+  mediaTypes?: Array<MediaTypes>;
+};
 
 function formatSourceMeta(v: Sourcerer): MetaOutput {
-  const types: MediaTypes[] = [];
+  const types: Array<MediaTypes> = [];
   if (v.scrapeMovie) types.push('movie');
   if (v.scrapeShow) types.push('show');
   return {

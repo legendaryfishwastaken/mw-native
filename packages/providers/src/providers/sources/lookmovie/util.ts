@@ -1,9 +1,9 @@
-import type { MovieMedia, ShowMedia } from '@/entrypoint/utils/media';
+import { MovieMedia, ShowMedia } from '@/entrypoint/utils/media';
 import { compareMedia } from '@/utils/compare';
-import type { ScrapeContext } from '@/utils/context';
+import { ScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
 
-import type { Result, ResultItem, ShowDataResult, episodeObj } from './type';
+import { Result, ResultItem, ShowDataResult, episodeObj } from './type';
 import { getVideo } from './video';
 
 export const baseUrl = 'https://lmscript.xyz';

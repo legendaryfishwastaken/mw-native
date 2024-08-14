@@ -1,10 +1,10 @@
 import { load } from 'cheerio';
 
-import type { SourcererEmbed } from '@/providers/base';
+import { SourcererEmbed } from '@/providers/base';
 import { streambucketScraper } from '@/providers/embeds/streambucket';
 import { vidsrcembedScraper } from '@/providers/embeds/vidsrc';
 import { vidsrcBase, vidsrcRCPBase } from '@/providers/sources/vidsrc/common';
-import type { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
+import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 
 function decodeSrc(encoded: string, seed: string) {
   let decoded = '';

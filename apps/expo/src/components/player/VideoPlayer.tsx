@@ -280,6 +280,8 @@ export const VideoPlayer = () => {
     };
   }, [player, meta, removeFromWatchHistory, autoPlay, setMeta, router]);
 
+  console.log("loading player", player);
+
   return (
     <GestureDetector gesture={composedGesture}>
       <View

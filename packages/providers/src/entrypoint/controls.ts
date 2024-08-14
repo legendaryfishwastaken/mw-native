@@ -1,14 +1,12 @@
-import type { FullScraperEvents, IndividualScraperEvents } from '@/entrypoint/utils/events';
-import type { ScrapeMedia } from '@/entrypoint/utils/media';
-import type { MetaOutput} from '@/entrypoint/utils/meta';
-import { getAllEmbedMetaSorted, getAllSourceMetaSorted, getSpecificId } from '@/entrypoint/utils/meta';
-import type { FeatureMap } from '@/entrypoint/utils/targets';
+import { FullScraperEvents, IndividualScraperEvents } from '@/entrypoint/utils/events';
+import { ScrapeMedia } from '@/entrypoint/utils/media';
+import { MetaOutput, getAllEmbedMetaSorted, getAllSourceMetaSorted, getSpecificId } from '@/entrypoint/utils/meta';
+import { FeatureMap } from '@/entrypoint/utils/targets';
 import { makeFetcher } from '@/fetchers/common';
-import type { Fetcher } from '@/fetchers/types';
-import type { Embed, EmbedOutput, Sourcerer, SourcererOutput } from '@/providers/base';
+import { Fetcher } from '@/fetchers/types';
+import { Embed, EmbedOutput, Sourcerer, SourcererOutput } from '@/providers/base';
 import { scrapeIndividualEmbed, scrapeInvidualSource } from '@/runners/individualRunner';
-import type { RunOutput} from '@/runners/runner';
-import { runAllProviders } from '@/runners/runner';
+import { RunOutput, runAllProviders } from '@/runners/runner';
 
 export interface ProviderControlsInput {
   fetcher: Fetcher;
@@ -16,6 +14,7 @@ export interface ProviderControlsInput {
   features: FeatureMap;
   sources: Sourcerer[];
   embeds: Embed[];
+  proxyStreams?: boolean; // temporary
 }
 
 export interface RunnerOptions {
@@ -32,6 +31,10 @@ export interface RunnerOptions {
 
   // the media you want to see sources from
   media: ScrapeMedia;
+
+  // it makes sense to have this in the builder
+  // but I belive it's more useful in runner ops
+  disableOpensubtitles?: boolean;
 }
 
 export interface SourceRunnerOptions {
@@ -43,6 +46,10 @@ export interface SourceRunnerOptions {
 
   // id of the source scraper you want to scrape from
   id: string;
+
+  // it makes sense to have this in the builder
+  // but I belive it's more useful in runner ops
+  disableOpensubtitles?: boolean;
 }
 
 export interface EmbedRunnerOptions {
@@ -54,6 +61,10 @@ export interface EmbedRunnerOptions {
 
   // id of the embed scraper you want to scrape from
   id: string;
+
+  // it makes sense to have this in the builder
+  // but I belive it's more useful in runner ops
+  disableOpensubtitles?: boolean;
 }
 
 export interface ProviderControls {
@@ -87,6 +98,7 @@ export function makeControls(ops: ProviderControlsInput): ProviderControls {
     features: ops.features,
     fetcher: makeFetcher(ops.fetcher),
     proxiedFetcher: makeFetcher(ops.proxiedFetcher ?? ops.fetcher),
+    proxyStreams: ops.proxyStreams,
   };
 
   return {

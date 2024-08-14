@@ -3,17 +3,17 @@ import { upcloudScraper } from '@/providers/embeds/upcloud';
 import { upstreamScraper } from '@/providers/embeds/upstream';
 import { vidCloudScraper } from '@/providers/embeds/vidcloud';
 import { getZoeChipSourceURL, getZoeChipSources } from '@/providers/sources/zoechip/scrape';
-import type { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
+import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 
 export const zoeBase = 'https://zoechip.cc';
 
-export interface ZoeChipSourceDetails {
+export type ZoeChipSourceDetails = {
   type: string; // Only seen "iframe" so far
   link: string;
   sources: string[]; // Never seen this populated, assuming it's a string array
   tracks: string[]; // Never seen this populated, assuming it's a string array
   title: string;
-}
+};
 
 export async function formatSource(
   ctx: MovieScrapeContext | ShowScrapeContext,

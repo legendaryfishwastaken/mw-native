@@ -1,9 +1,8 @@
 import { flags } from '@/entrypoint/utils/targets';
-import type { SourcererOutput} from '@/providers/base';
-import { makeSourcerer } from '@/providers/base';
+import { SourcererOutput, makeSourcerer } from '@/providers/base';
 import { smashyStreamOScraper } from '@/providers/embeds/smashystream/opstream';
 import { smashyStreamFScraper } from '@/providers/embeds/smashystream/video1';
-import type { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
+import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 
 const universalScraper = async (ctx: ShowScrapeContext | MovieScrapeContext): Promise<SourcererOutput> => {
   // theres no point in fetching the player page
@@ -12,17 +11,17 @@ const universalScraper = async (ctx: ShowScrapeContext | MovieScrapeContext): Pr
   const query =
     ctx.media.type === 'movie'
       ? `?tmdb=${ctx.media.tmdbId}`
-      : `?tmdbId=${ctx.media.tmdbId}&season=${ctx.media.season.number}&episode=${ctx.media.episode.number}`;
+      : `?tmdb=${ctx.media.tmdbId}&season=${ctx.media.season.number}&episode=${ctx.media.episode.number}`;
 
   return {
     embeds: [
       {
         embedId: smashyStreamFScraper.id,
-        url: `https://embed.smashystream.com/video1dn.php${query}`,
+        url: `https://embed.smashystream.com/videofeee.php${query}`,
       },
       {
         embedId: smashyStreamOScraper.id,
-        url: `https://embed.smashystream.com/videoop.php${query}`,
+        url: `https://embed.smashystream.com/shortmoviec.php${query}`,
       },
     ],
   };
@@ -32,6 +31,7 @@ export const smashyStreamScraper = makeSourcerer({
   id: 'smashystream',
   name: 'SmashyStream',
   rank: 30,
+  disabled: true,
   flags: [flags.CORS_ALLOWED],
   scrapeMovie: universalScraper,
   scrapeShow: universalScraper,

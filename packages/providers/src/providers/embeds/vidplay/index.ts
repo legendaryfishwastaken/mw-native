@@ -1,9 +1,9 @@
+import { flags } from '@/entrypoint/utils/targets';
 import { makeEmbed } from '@/providers/base';
-import type { Caption} from '@/providers/captions';
-import { getCaptionTypeFromUrl, labelToLanguageCode } from '@/providers/captions';
+import { Caption, getCaptionTypeFromUrl, labelToLanguageCode } from '@/providers/captions';
 
 import { getFileUrl } from './common';
-import type { SubtitleResult, ThumbnailTrack, VidplaySourceResponse } from './types';
+import { SubtitleResult, ThumbnailTrack, VidplaySourceResponse } from './types';
 
 export const vidplayScraper = makeEmbed({
   id: 'vidplay',
@@ -54,7 +54,7 @@ export const vidplayScraper = makeEmbed({
           id: 'primary',
           type: 'hls',
           playlist: source,
-          flags: [],
+          flags: [flags.PROXY_BLOCKED],
           headers: {
             Referer: url.origin,
             Origin: url.origin,

@@ -1,7 +1,7 @@
 import { makeFullUrl } from '@/fetchers/common';
-import type { FetchLike } from '@/fetchers/fetch';
+import { FetchLike } from '@/fetchers/fetch';
 import { makeStandardFetcher } from '@/fetchers/standardFetch';
-import type { Fetcher } from '@/fetchers/types';
+import { Fetcher } from '@/fetchers/types';
 
 const headerMap: Record<string, string> = {
   cookie: 'X-Cookie',
@@ -25,7 +25,7 @@ export function makeSimpleProxyFetcher(proxyUrl: string, f: FetchLike): Fetcher 
       Object.entries(responseHeaderMap).forEach((entry) => {
         const value = res.headers.get(entry[0]);
         if (!value) return;
-        res.extraHeaders?.set(entry[0].toLowerCase(), value);
+        res.extraHeaders?.set(entry[1].toLowerCase(), value);
       });
 
       // set correct final url

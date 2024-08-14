@@ -1,10 +1,9 @@
 import { load } from 'cheerio';
 
-import type { ScrapeContext } from '@/utils/context';
+import { ScrapeContext } from '@/utils/context';
 import { makeCookieHeader, parseSetCookie } from '@/utils/cookie';
 
-import type { EmbedsResult} from './type';
-import { baseUrl, baseUrl2 } from './type';
+import { EmbedsResult, baseUrl, baseUrl2 } from './type';
 
 export async function getEmbeds(ctx: ScrapeContext, id: string): Promise<EmbedsResult> {
   const data = await ctx.fetcher.full(`/${id}`, {
@@ -23,7 +22,7 @@ export async function getEmbeds(ctx: ScrapeContext, id: string): Promise<EmbedsR
 
   let aGoozCookie = '';
   let cookie = '';
-  if (cookies?.aGooz && RandomCookieName && RandomCookieValue) {
+  if (cookies && cookies.aGooz && RandomCookieName && RandomCookieValue) {
     aGoozCookie = cookies.aGooz.value;
     cookie = makeCookieHeader({
       aGooz: aGoozCookie,

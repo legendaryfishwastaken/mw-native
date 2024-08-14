@@ -1,6 +1,6 @@
 import { flags } from '@/entrypoint/utils/targets';
 import { makeEmbed } from '@/providers/base';
-import type { EmbedScrapeContext } from '@/utils/context';
+import { EmbedScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
 
 import { getDecryptedId } from './common';
@@ -21,6 +21,8 @@ async function getVideowlUrlStream(ctx: EmbedScrapeContext, decryptedId: string)
 export const warezcdnembedHlsScraper = makeEmbed({
   id: 'warezcdnembedhls', // WarezCDN is both a source and an embed host
   name: 'WarezCDN HLS',
+  // method no longer works
+  disabled: true,
   rank: 83,
   async scrape(ctx) {
     const decryptedId = await getDecryptedId(ctx);

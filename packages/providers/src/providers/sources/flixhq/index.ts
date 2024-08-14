@@ -1,6 +1,5 @@
 import { flags } from '@/entrypoint/utils/targets';
-import type { SourcererEmbed} from '@/providers/base';
-import { makeSourcerer } from '@/providers/base';
+import { SourcererEmbed, makeSourcerer } from '@/providers/base';
 import { upcloudScraper } from '@/providers/embeds/upcloud';
 import { vidCloudScraper } from '@/providers/embeds/vidcloud';
 import { getFlixhqMovieSources, getFlixhqShowSources, getFlixhqSourceDetails } from '@/providers/sources/flixhq/scrape';
