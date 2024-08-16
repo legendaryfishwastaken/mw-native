@@ -5,7 +5,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { isDevelopmentProvisioningProfile } from "modules/check-ios-certificate";
+import { isIncorrectAppId } from "modules/check-ios-app-id";
 import { Text, View } from "tamagui";
 import { LinearGradient } from "tamagui/linear-gradient";
 
@@ -39,12 +39,11 @@ export const BottomControls = () => {
         (player.duration ?? 0) - (player.currentTime ?? 0),
       )}`;
       return { currentTime: current, remainingTime: remaining };
-    } else {
-      return {
-        currentTime: mapSecondsToTime(0),
-        remainingTime: mapSecondsToTime(0),
-      };
     }
+    return {
+      currentTime: mapSecondsToTime(0),
+      remainingTime: mapSecondsToTime(0),
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [player?.currentTime]);
 
@@ -110,8 +109,7 @@ export const BottomControls = () => {
                 <AudioTrackSelector />
                 <SettingsSelector />
                 {Platform.OS === "android" ||
-                (Platform.OS === "ios" &&
-                  isDevelopmentProvisioningProfile()) ? (
+                (Platform.OS === "ios" && !isIncorrectAppId()) ? (
                   <DownloadButton />
                 ) : null}
               </>

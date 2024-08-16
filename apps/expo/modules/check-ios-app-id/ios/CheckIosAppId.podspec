@@ -1,8 +1,8 @@
 Pod::Spec.new do |s|
-  s.name           = 'CheckIosCertificate'
+  s.name           = 'CheckIosAppId'
   s.version        = '1.0.0'
-  s.summary        = 'Check if iOS certificate is Development or Production.'
-  s.description    = 'Check if iOS certificate is Development or Production.'
+  s.summary        = 'Check if iOS App ID is explicit or wildcard.'
+  s.description    = 'Check if iOS App ID is explicit or wildcard.'
   s.author         = 'castdrian'
   s.homepage       = 'https://docs.expo.dev/modules/'
   s.platforms      = { :ios => '13.4', :tvos => '13.4' }
