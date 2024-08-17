@@ -1,7 +1,6 @@
 import type { ExpoConfig } from "expo/config";
 
 import { version } from "./package.json";
-import withRemoveiOSNotificationEntitlement from "./src/plugins/withRemoveiOSNotificationEntitlement";
 
 const defineConfig = (): ExpoConfig => ({
   name: "movie-web",
@@ -44,7 +43,6 @@ const defineConfig = (): ExpoConfig => ({
   plugins: [
     "expo-router",
     "expo-video",
-    [withRemoveiOSNotificationEntitlement as unknown as string],
     [
       "expo-screen-orientation",
       {
