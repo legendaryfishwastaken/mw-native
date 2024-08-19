@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Platform, TouchableOpacity } from "react-native";
 import Animated, {
   useAnimatedStyle,
@@ -27,29 +27,25 @@ export const BottomControls = () => {
   const isLocalFile = usePlayerStore((state) => state.isLocalFile);
   const [showRemaining, setShowRemaining] = useState(false);
 
+  const [localDuration, setLocalDuration] = useState(0);
+  const [localCurrentTime, setLocalCurrentTime] = useState(0);
+
   const toggleTimeDisplay = useCallback(() => {
     setIsIdle(false);
     setShowRemaining(!showRemaining);
   }, [showRemaining, setIsIdle]);
 
   const { currentTime, remainingTime } = useMemo(() => {
-    if (player) {
-      const current = mapSecondsToTime(player.currentTime);
-      const remaining = `-${mapSecondsToTime(
-        (player.duration ?? 0) - (player.currentTime ?? 0),
-      )}`;
-      return { currentTime: current, remainingTime: remaining };
-    }
-    return {
-      currentTime: mapSecondsToTime(0),
-      remainingTime: mapSecondsToTime(0),
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [player?.currentTime]);
+    const current = mapSecondsToTime(localCurrentTime);
+    const remaining = `-${mapSecondsToTime(
+      (localDuration ?? 0) - localCurrentTime,
+    )}`;
+    return { currentTime: current, remainingTime: remaining };
+  }, [localCurrentTime, localDuration]);
 
   const durationTime = useMemo(() => {
-    return mapSecondsToTime(player?.duration ?? 0);
-  }, [player?.duration]);
+    return mapSecondsToTime(localDuration ?? 0);
+  }, [localDuration]);
 
   const translateY = useSharedValue(128);
 
@@ -62,6 +58,25 @@ export const BottomControls = () => {
       transform: [{ translateY: translateY.value }],
     };
   });
+
+  // TODO: No duration events in expo-video yet
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log(
+        "checking video duration and time",
+        player?.duration,
+        player?.currentTime,
+      );
+      if (player?.duration && player?.currentTime) {
+        setLocalDuration(player.duration);
+        setLocalCurrentTime(player.currentTime);
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [player]);
 
   return (
     <Animated.View style={[animatedStyle, { height: 148 }]}>

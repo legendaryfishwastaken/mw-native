@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { Spinner } from "tamagui";
 
@@ -10,10 +10,21 @@ export const PlayButton = () => {
   const pauseAudio = usePlayerStore((state) => state.pauseAudio);
 
   const [isPlaying, setIsPlaying] = useState(player?.playing ?? false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const statusListener = player?.addListener("statusChange", (status) => {
+      setIsLoading(status === "loading");
+    });
+
+    return () => {
+      statusListener?.remove();
+    };
+  }, [player]);
 
   if (!player) return null;
 
-  if (player.status === "loading") {
+  if (isLoading) {
     return <Spinner size="large" color="white" />;
   }
 
