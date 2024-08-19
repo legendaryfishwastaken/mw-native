@@ -1,5 +1,6 @@
+import type { VideoPlayer as VideoPlayerType } from "expo-video";
 import type { SharedValue } from "react-native-reanimated";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Dimensions, Platform } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
@@ -11,11 +12,12 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ResizeMode } from "expo-av";
 import * as Haptics from "expo-haptics";
 import { useKeepAwake } from "expo-keep-awake";
+import { requireNativeModule } from "expo-modules-core";
 import * as NavigationBar from "expo-navigation-bar";
 import * as Network from "expo-network";
 import { useRouter } from "expo-router";
 import * as StatusBar from "expo-status-bar";
-import { useVideoPlayer, VideoView } from "expo-video";
+import { VideoView } from "expo-video";
 import { Feather } from "@expo/vector-icons";
 import { Spinner, useTheme, View } from "tamagui";
 
@@ -41,6 +43,10 @@ import {
 import { CaptionRenderer } from "./CaptionRenderer";
 import { ControlsOverlay } from "./ControlsOverlay";
 
+const ExpoVideoPlayer =
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  requireNativeModule("ExpoVideo").VideoPlayer as VideoPlayerType;
+
 export const VideoPlayer = () => {
   useKeepAwake();
 
@@ -60,7 +66,6 @@ export const VideoPlayer = () => {
 
   const scale = useSharedValue(1);
 
-  const state = usePlayerStore((state) => state.interface.state);
   const isIdle = usePlayerStore((state) => state.interface.isIdle);
   const stream = usePlayerStore((state) => state.interface.currentStream);
   const selectedAudioTrack = useAudioTrackStore((state) => state.selectedTrack);
@@ -80,24 +85,43 @@ export const VideoPlayer = () => {
   const { wifiDefaultQuality, mobileDataDefaultQuality } =
     useNetworkSettingsStore();
 
-  const player = useVideoPlayer(videoSrc, (player) => {
-    if (state === "playing") {
-      player.play();
-    }
-    if (meta) {
-      const media = convertMetaToScrapeMedia(meta);
-      const watchHistoryItem = getWatchHistoryItem(media);
-      if (watchHistoryItem) {
-        player.currentTime = watchHistoryItem.positionMillis / 1000;
-      }
-    }
-  });
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const player: VideoPlayerType = useMemo(
+    // @ts-expect-error - ExpoVideoPlayer is not a valid component
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    () => new ExpoVideoPlayer(videoSrc),
+    [videoSrc],
+  );
 
   useEffect(() => {
     if (player) {
       setVideoPlayer(player);
     }
   }, [player, setVideoPlayer]);
+
+  useEffect(() => {
+    const statusListener = player.addListener("statusChange", (status) => {
+      console.log("VideoPlayer status", status);
+      if (status === "readyToPlay") {
+        player.play();
+      }
+    });
+
+    return () => {
+      statusListener.remove();
+    };
+  }, [getWatchHistoryItem, meta, player]);
+
+  useEffect(() => {
+    if (meta && player.status === "readyToPlay" && player.currentTime < 1) {
+      const media = convertMetaToScrapeMedia(meta);
+      const watchHistoryItem = getWatchHistoryItem(media);
+      if (watchHistoryItem) {
+        player.currentTime = watchHistoryItem.positionMillis / 1000;
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [player.status]);
 
   const updateResizeMode = (newMode: ResizeMode) => {
     setResizeMode(newMode);
@@ -219,12 +243,13 @@ export const VideoPlayer = () => {
 
     return () => {
       if (meta) {
-        // const item = convertMetaToItemData(meta);
-        // const scrapeMedia = convertMetaToScrapeMedia(meta);
-        // updateWatchHistory(item, scrapeMedia, player.currentTime);
+        const item = convertMetaToItemData(meta);
+        const scrapeMedia = convertMetaToScrapeMedia(meta);
+        updateWatchHistory(item, scrapeMedia, player.currentTime);
       }
       void synchronizePlayback();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     isLocalFile,
     dismissFullscreenPlayer,
@@ -241,6 +266,10 @@ export const VideoPlayer = () => {
 
   useEffect(() => {
     const playerStatusChange = player.addListener("statusChange", (status) => {
+      if (status === "readyToPlay") {
+        player.play();
+      }
+
       const isFinished = player.duration - player.currentTime < 1;
       if (meta && status === "idle" && meta.type === "movie" && isFinished) {
         const item = convertMetaToItemData(meta);

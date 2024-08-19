@@ -22,8 +22,8 @@ export const SeekButton = ({ type }: SeekProps) => {
       onPress={() => {
         player.currentTime =
           type === "forward"
-            ? player.currentTime + 10000
-            : player.currentTime - 10000;
+            ? player.currentTime + 10
+            : player.currentTime - 10;
         void setAudioPositionAsync(player.currentTime);
       }}
     />

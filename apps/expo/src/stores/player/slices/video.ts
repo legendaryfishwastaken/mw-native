@@ -63,9 +63,17 @@ export const createVideoSlice: MakeSlice<VideoSlice> = (set) => ({
     set({ isLocalFile });
   },
   resetVideo() {
-    set({ meta: null, isLocalFile: false });
     set((s) => {
-      s.interface.playerStatus = PlayerStatus.SCRAPING;
+      s.player?.release();
+      return {
+        meta: null,
+        isLocalFile: false,
+        videoSrc: null,
+        player: null,
+        interface: {
+          playerStatus: PlayerStatus.SCRAPING,
+        },
+      };
     });
   },
 });
