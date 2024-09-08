@@ -45,8 +45,6 @@ const VideoSlider = ({ onSlidingComplete }: VideoSliderProps) => {
   // TODO: Buffers are not yet implemented in expo-video
   const bufferValue = 0;
 
-  console.log("VideoSlider duration", player?.currentTime, player?.duration);
-
   const valueToX = (v: number) => {
     if (maximumValue === minimumValue) return 0;
     return (width * (v - minimumValue)) / (maximumValue - minimumValue);
@@ -158,6 +156,7 @@ const VideoSlider = ({ onSlidingComplete }: VideoSliderProps) => {
                 height: trackSize_,
                 backgroundColor: theme.videoSliderFilled.val,
                 borderRadius: trackSize_ / 2,
+                zIndex: 1,
               },
               progressStyle,
             ]}

@@ -168,6 +168,7 @@ export function useScrape() {
           update: updateEvent,
           discoverEmbeds: discoverEmbedsEvent,
         },
+        sourceOrder: ["insertunit"],
       });
       return getResult(output);
     },

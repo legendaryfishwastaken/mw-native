@@ -32,7 +32,19 @@ export const QualitySelector = (props: SheetProps) => {
   } else if (stream.type === "hls") {
     if (!hlsTracks?.video) return null;
 
-    qualityMap = hlsTracks.video.map((video) => ({
+    const hlsTracksWithoutDuplicatedQualities = hlsTracks.video.filter(
+      (video, index, self) => {
+        return (
+          index ===
+          self.findIndex(
+            (v) =>
+              v.properties[0]?.attributes.resolution ===
+              video.properties[0]?.attributes.resolution,
+          )
+        );
+      },
+    );
+    qualityMap = hlsTracksWithoutDuplicatedQualities.map((video) => ({
       quality:
         (video.properties[0]?.attributes.resolution as string) ?? "unknown",
       url: constructFullUrl(stream.playlist, video.uri),

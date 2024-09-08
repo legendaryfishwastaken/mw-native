@@ -101,7 +101,6 @@ export const VideoPlayer = () => {
 
   useEffect(() => {
     const statusListener = player.addListener("statusChange", (status) => {
-      console.log("VideoPlayer status", status);
       if (status === "readyToPlay") {
         player.play();
       }
@@ -296,8 +295,6 @@ export const VideoPlayer = () => {
       playerStatusChange.remove();
     };
   }, [player, meta, removeFromWatchHistory, autoPlay, setMeta, router]);
-
-  console.log("VideoPlayer duration", player.currentTime, player.duration);
 
   return (
     <GestureDetector gesture={composedGesture}>

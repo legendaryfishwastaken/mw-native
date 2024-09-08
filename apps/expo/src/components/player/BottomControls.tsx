@@ -62,14 +62,11 @@ export const BottomControls = () => {
   // TODO: No duration events in expo-video yet
   useEffect(() => {
     const interval = setInterval(() => {
-      console.log(
-        "checking video duration and time",
-        player?.duration,
-        player?.currentTime,
-      );
       if (player?.duration && player?.currentTime) {
-        setLocalDuration(player.duration);
-        setLocalCurrentTime(player.currentTime);
+        requestAnimationFrame(() => {
+          setLocalDuration(player.duration);
+          setLocalCurrentTime(player.currentTime);
+        });
       }
     }, 1000);
 
