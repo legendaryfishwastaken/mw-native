@@ -13,8 +13,8 @@ export const PlayButton = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const statusListener = player?.addListener("statusChange", (status) => {
-      setIsLoading(status === "loading");
+    const statusListener = player?.addListener("statusChange", (data) => {
+      setIsLoading(data.status === "loading");
     });
 
     return () => {

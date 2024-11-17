@@ -11,7 +11,6 @@ import { TamaguiProvider, Theme, useTheme } from "tamagui";
 import tamaguiConfig from "tamagui.config";
 
 import { useThemeStore } from "~/stores/theme";
-// @ts-expect-error - Without named import it causes an infinite loop
 import _styles from "../../tamagui-web.css";
 
 export {

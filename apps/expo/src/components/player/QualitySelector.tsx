@@ -14,7 +14,8 @@ export const QualitySelector = (props: SheetProps) => {
   const stream = usePlayerStore((state) => state.interface.currentStream);
   const hlsTracks = usePlayerStore((state) => state.interface.hlsTracks);
 
-  if (!player || !videoSrc || !stream) return null;
+  if (!player || !videoSrc || typeof videoSrc === "number" || !stream)
+    return null;
   let qualityMap: { quality: string; url: string }[];
   let currentQuality: string | undefined;
 

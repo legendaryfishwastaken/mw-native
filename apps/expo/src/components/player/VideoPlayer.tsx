@@ -1,6 +1,5 @@
-import type { VideoPlayer as VideoPlayerType } from "expo-video";
 import type { SharedValue } from "react-native-reanimated";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dimensions, Platform } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
@@ -12,12 +11,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ResizeMode } from "expo-av";
 import * as Haptics from "expo-haptics";
 import { useKeepAwake } from "expo-keep-awake";
-import { requireNativeModule } from "expo-modules-core";
 import * as NavigationBar from "expo-navigation-bar";
 import * as Network from "expo-network";
 import { useRouter } from "expo-router";
 import * as StatusBar from "expo-status-bar";
-import { VideoView } from "expo-video";
+import { createVideoPlayer, VideoView } from "expo-video";
 import { Feather } from "@expo/vector-icons";
 import { Spinner, useTheme, View } from "tamagui";
 
@@ -42,10 +40,6 @@ import {
 } from "~/stores/settings";
 import { CaptionRenderer } from "./CaptionRenderer";
 import { ControlsOverlay } from "./ControlsOverlay";
-
-const ExpoVideoPlayer =
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  requireNativeModule("ExpoVideo").VideoPlayer as VideoPlayerType;
 
 export const VideoPlayer = () => {
   useKeepAwake();
@@ -85,13 +79,7 @@ export const VideoPlayer = () => {
   const { wifiDefaultQuality, mobileDataDefaultQuality } =
     useNetworkSettingsStore();
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const player: VideoPlayerType = useMemo(
-    // @ts-expect-error - ExpoVideoPlayer is not a valid component
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    () => new ExpoVideoPlayer(videoSrc),
-    [videoSrc],
-  );
+  const player = createVideoPlayer(videoSrc);
 
   useEffect(() => {
     if (player) {
@@ -100,8 +88,8 @@ export const VideoPlayer = () => {
   }, [player, setVideoPlayer]);
 
   useEffect(() => {
-    const statusListener = player.addListener("statusChange", (status) => {
-      if (status === "readyToPlay") {
+    const statusListener = player.addListener("statusChange", (data) => {
+      if (data.status === "readyToPlay") {
         player.play();
       }
     });
@@ -264,18 +252,23 @@ export const VideoPlayer = () => {
   ]);
 
   useEffect(() => {
-    const playerStatusChange = player.addListener("statusChange", (status) => {
-      if (status === "readyToPlay") {
+    const playerStatusChange = player.addListener("statusChange", (data) => {
+      if (data.status === "readyToPlay") {
         player.play();
       }
 
       const isFinished = player.duration - player.currentTime < 1;
-      if (meta && status === "idle" && meta.type === "movie" && isFinished) {
+      if (
+        meta &&
+        data.status === "idle" &&
+        meta.type === "movie" &&
+        isFinished
+      ) {
         const item = convertMetaToItemData(meta);
         removeFromWatchHistory(item);
       }
 
-      if (autoPlay && status === "idle" && meta?.type === "show") {
+      if (autoPlay && data.status === "idle" && meta?.type === "show") {
         getNextEpisode(meta)
           .then((nextEpisodeMeta) => {
             if (!nextEpisodeMeta) return;

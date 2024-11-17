@@ -59,19 +59,17 @@ export const BottomControls = () => {
     };
   });
 
-  // TODO: No duration events in expo-video yet
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (player?.duration && player?.currentTime) {
-        requestAnimationFrame(() => {
-          setLocalDuration(player.duration);
-          setLocalCurrentTime(player.currentTime);
-        });
-      }
-    }, 1000);
+    if (player?.duration) {
+      setLocalDuration(player.duration);
+    }
+
+    const subscription = player?.addListener("timeUpdate", (payload) => {
+      setLocalCurrentTime(payload.currentTime);
+    });
 
     return () => {
-      clearInterval(interval);
+      subscription?.remove();
     };
   }, [player]);
 

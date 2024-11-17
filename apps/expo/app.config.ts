@@ -19,6 +19,7 @@ const defineConfig = (): ExpoConfig => ({
   },
   assetBundlePatterns: ["**/*"],
   ios: {
+    newArchEnabled: true,
     bundleIdentifier: "dev.movieweb.mobile",
     supportsTablet: true,
     requireFullScreen: true,
@@ -29,6 +30,7 @@ const defineConfig = (): ExpoConfig => ({
     },
   },
   android: {
+    newArchEnabled: true,
     package: "dev.movieweb.mobile",
     permissions: ["WRITE_SETTINGS"],
   },
@@ -52,14 +54,11 @@ const defineConfig = (): ExpoConfig => ({
     [
       "expo-build-properties",
       {
-        ios: {
-          newArchEnabled: false,
-        },
         android: {
-          newArchEnabled: false,
           minSdkVersion: 24,
           packagingOptions: {
             pickFirst: ["**/libcrypto.so"],
+            excludes: ["**/libreactnative.so"],
           },
         },
       },
