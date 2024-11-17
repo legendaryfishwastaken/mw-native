@@ -4,6 +4,7 @@ on:
   workflow_dispatch: # Manual trigger
     inputs:
       target:
+        type: choice
         description: "Choose the build target"
         required: true
         default: "android"
