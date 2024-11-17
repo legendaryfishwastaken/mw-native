@@ -1,9 +1,15 @@
 name: build mobile app
 
 on:
-  pull_request:
-    types: [opened, ready_for_review]
-  workflow_dispatch:
+  workflow_dispatch: # Manual trigger
+    inputs:
+      target:
+        description: "Choose the build target"
+        required: true
+        default: "android"
+        options:
+          - android
+          - ios
 
 permissions:
   contents: write
@@ -11,6 +17,7 @@ permissions:
 
 jobs:
   build-android:
+    if: ${{ inputs.target == 'android' }} # Runs only if 'android' is selected
     runs-on: ubuntu-latest
 
     steps:
@@ -63,6 +70,7 @@ jobs:
           path: ./apps/expo/android/app/build/movie-web.apk
 
   build-ios:
+    if: ${{ inputs.target == 'ios' }} # Runs only if 'ios' is selected
     runs-on: macos-14
 
     steps:
@@ -103,7 +111,7 @@ jobs:
         run: cd apps/expo && pnpm ipa
 
       - name: Upload movie-web.ipa as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: ipa
           path: ./apps/expo/ios/build/movie-web.ipa
