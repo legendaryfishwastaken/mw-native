@@ -13,7 +13,7 @@ const MWSwitch = (props: SwitchProps) => {
         },
         thumbColor: theme.switchThumbColor.val,
       }}
-      {...props}
+      {...(props as any)}
     />
   );
 };

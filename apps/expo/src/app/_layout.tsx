@@ -11,7 +11,6 @@ import { TamaguiProvider, Theme, useTheme } from "tamagui";
 import tamaguiConfig from "tamagui.config";
 
 import { useThemeStore } from "~/stores/theme";
-import _styles from "../../tamagui-web.css";
 
 export {
   // Catch any errors thrown by the Layout component.
