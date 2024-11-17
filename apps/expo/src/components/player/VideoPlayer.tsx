@@ -1,5 +1,5 @@
 import type { SharedValue } from "react-native-reanimated";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Dimensions, Platform } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
@@ -79,10 +79,11 @@ export const VideoPlayer = () => {
   const { wifiDefaultQuality, mobileDataDefaultQuality } =
     useNetworkSettingsStore();
 
-  const player = createVideoPlayer(videoSrc);
+  const player = useMemo(() => createVideoPlayer(videoSrc), [videoSrc]);
 
   useEffect(() => {
     if (player) {
+      player.timeUpdateEventInterval = 1;
       setVideoPlayer(player);
     }
   }, [player, setVideoPlayer]);
